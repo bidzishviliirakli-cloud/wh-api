@@ -1,4 +1,4 @@
-export enum ELocation{
-    TBILISI = "tbilisi",
-    GORI = "gori"
+export enum ELocation {
+	TBILISI = "tbilisi",
+	GORI = "gori"
 }

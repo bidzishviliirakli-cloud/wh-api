@@ -2,7 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { firstValueFrom } from "rxjs";
 
-import { EHttpCode, STRAPI_URL, IGetContentParams } from "@contracts";
+import { EHttpCode, STRAPI_URL, IGetContentParams, ICreateContentParams } from "@contracts";
 
 @Injectable()
 export class StrapiService {
@@ -10,7 +10,7 @@ export class StrapiService {
 
 	async getContent(params: IGetContentParams) {
 		const { id, content } = params;
-		const url = this.generateUrl(id, content);
+		const url = this.generateUrl(content, id);
 
 		let strapiResponse;
 
@@ -26,7 +26,26 @@ export class StrapiService {
 		return strapiResponse.data.data;
 	}
 
-	private generateUrl(id: string, content: string) {
+	async createContent(params: ICreateContentParams<any>) {
+		const { data, content } = params;
+		const url = `${STRAPI_URL}/${content}`;
+
+
+		let strapiResponse;
+
+		try {
+			strapiResponse = await firstValueFrom(this.httpService.post(url, { data }));
+		} catch (error) {
+			let status = error.response.status || HttpStatus.INTERNAL_SERVER_ERROR;
+			let message = error.response.statusText || EHttpCode.INTERNAL_SERVER_ERROR;
+
+			throw new HttpException(message, status);
+		}
+
+		return strapiResponse.data.data;
+	}
+
+	private generateUrl(content: string, id?: string): string {
 		let baseUrl = `${STRAPI_URL}/${content}`;
 
 		if (id) {

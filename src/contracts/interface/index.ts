@@ -4,3 +4,6 @@ export * from "./IGetContentParams";
 export * from "./IGetContentResponse";
 export * from "./IProperty";
 export * from "./IBlog";
+export * from "./ICompany";
+export * from "./ICreateContentParams";
+export * from "./ICustomerContactRequest"

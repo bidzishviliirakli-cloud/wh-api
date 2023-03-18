@@ -21,7 +21,8 @@
       "@strapi": ["src/strapi"],
       "@agent": ["src/content/agent"],
       "@contracts": ["src/contracts"],
-      "@content" : ["src/content"]
+      "@content" : ["src/content"],
+      "@dto": ["src/dto"]
     }
   }
 }

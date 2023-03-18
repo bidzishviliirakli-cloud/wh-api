@@ -9,7 +9,6 @@ export class AgentController {
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IAgent> {
-		
 		return this.agentService.getOne(id);
 	}
 

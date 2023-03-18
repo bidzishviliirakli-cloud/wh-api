@@ -16,22 +16,22 @@ export interface IProperty {
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
-		propertyAmenities:{
-            data:  Array<IPropertyAmenity>;
-        }
+		propertyAmenities: {
+			data: Array<IPropertyAmenity>;
+		};
 		propertyCategory: {
-            data: IPropertyCategory
-        };
+			data: IPropertyCategory;
+		};
 		dealType: {
-            data: IDealType
-        };
+			data: IDealType;
+		};
 
 		gallery: {
-            data: Array<IStrapiImage>
-        };
-        propertyLocation: {
-            data: IPropertyLocation;
-        }
+			data: Array<IStrapiImage>;
+		};
+		propertyLocation: {
+			data: IPropertyLocation;
+		};
 		developer: object;
 	};
 }

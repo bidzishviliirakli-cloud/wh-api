@@ -10,34 +10,34 @@ export class PropertyService {
 	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<IProperty> {
-		const data = await this.strapiService.getContent({ id, content: this.content });
-		return data;
+		return this.strapiService.getContent({ id, content: this.content });
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
-		const data = await this.strapiService.getContent({ content: this.content });
+		const data: IProperty[] = await this.strapiService.getContent({ content: this.content });
 
 		const filteredData = this.queryFilter(filter, data);
 
 		return filteredData;
 	}
 
-	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty>{
+	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
 		const { location, dealType, category } = filter;
 		let filteredData = data;
 
-		if(location){
-			filteredData =  data.filter( el => el?.attributes?.propertyLocation?.data?.attributes?.title === location);
+		if (location) {
+			filteredData = data.filter((el) => el?.attributes?.propertyLocation?.data?.attributes?.title === location);
 		}
 
-		if( dealType ) {
-			filteredData = filteredData.filter( el => el?.attributes?.dealType?.data?.attributes?.title === dealType);
+		if (dealType) {
+			filteredData = filteredData.filter((el) => el?.attributes?.dealType?.data?.attributes?.title === dealType);
 		}
 
-		if( category ) {
-			filteredData = filteredData.filter( el => el?.attributes?.propertyCategory?.data?.attributes?.title === category);
+		if (category) {
+			filteredData = filteredData.filter(
+				(el) => el?.attributes?.propertyCategory?.data?.attributes?.title === category
+			);
 		}
-
 
 		return filteredData;
 	}
