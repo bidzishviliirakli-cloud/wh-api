@@ -22,7 +22,7 @@ export class PropertyService {
 	}
 
 	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
-		const { location, dealType, category } = filter;
+		const { location, dealType, category, agent } = filter;
 		let filteredData = data;
 
 		if (location) {
@@ -36,6 +36,12 @@ export class PropertyService {
 		if (category) {
 			filteredData = filteredData.filter(
 				(el) => el?.attributes?.propertyCategory?.data?.attributes?.title === category
+			);
+		}
+
+		if (agent) {
+			filteredData = filteredData.filter(
+				(el) => el?.attributes?.agent?.attributes?.name === agent
 			);
 		}
 

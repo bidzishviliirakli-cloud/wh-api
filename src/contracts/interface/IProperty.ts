@@ -3,11 +3,13 @@ import { IPropertyLocation } from "./IPropertyLocation";
 import { IPropertyAmenity } from "./IPropertyAmenity";
 import { IPropertyCategory } from "./IPropertyCategory";
 import { IStrapiImage } from "./IStrapiImage";
+import { IAgent } from "./IAgent";
 
 export interface IProperty {
 	id: number;
 	attributes: {
 		title: string;
+		agent: IAgent;
 		description: string;
 		size: number;
 		bedroomQuantity: number;
