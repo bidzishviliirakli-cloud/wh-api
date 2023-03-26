@@ -7,6 +7,7 @@ import { SWAGGER_PROPERTIES } from "@contracts";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	const PORT = process.env.PORT || 3000;
 
 	const config = new DocumentBuilder()
 		.setTitle(SWAGGER_PROPERTIES.title)
@@ -19,6 +20,6 @@ async function bootstrap() {
 	app.useGlobalInterceptors(new TransformInterceptor());
 	app.useGlobalPipes(new ValidationPipe());
 
-	await app.listen(3000);
+	await app.listen(PORT);
 }
 bootstrap();
