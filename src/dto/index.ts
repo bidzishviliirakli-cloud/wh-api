@@ -1,1 +1,1 @@
-export  * from "./ICustomerContactRequestPayload.dto"
+export * from "./ICustomerContactRequestPayload.dto";

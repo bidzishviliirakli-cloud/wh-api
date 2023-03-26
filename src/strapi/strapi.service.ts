@@ -30,7 +30,6 @@ export class StrapiService {
 		const { data, content } = params;
 		const url = `${STRAPI_URL}/${content}`;
 
-
 		let strapiResponse;
 
 		try {

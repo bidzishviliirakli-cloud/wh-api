@@ -6,7 +6,7 @@ import { ECMSContent, IBlog } from "@contracts";
 export class BlogService {
 	content = ECMSContent.BLOG;
 
-	constructor(private strapiService: StrapiService) {}
+	constructor(private strapiService: StrapiService) { }
 
 	async getOne(id: string): Promise<IBlog> {
 		return this.strapiService.getContent({ id, content: this.content });

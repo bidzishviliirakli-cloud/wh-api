@@ -1,11 +1,13 @@
-import { ICustomerContactRequest } from "@contracts";
+import { ECMSContent, ICustomerContactRequest } from "@contracts";
 import { ICustomerContactRequestPayloadDTO } from "@dto";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { CustomerContactRequestService } from "./customer-contact-request.service";
 
-@Controller("customer-contact-request")
+@ApiTags(ECMSContent.CUSTOMER_CONTACT_REQUEST)
+@Controller(`content/${ECMSContent.CUSTOMER_CONTACT_REQUEST}`)
 export class CustomerContactRequestController {
-	constructor(private customerContactRequestService: CustomerContactRequestService) {}
+	constructor(private customerContactRequestService: CustomerContactRequestService) { }
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<ICustomerContactRequest> {

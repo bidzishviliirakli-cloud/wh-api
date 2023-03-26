@@ -1,11 +1,13 @@
-import { IProperty } from "@contracts";
+import { ECMSContent, IProperty } from "@contracts";
 import { Controller, Get, Param, Query } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 
 import { PropertyService } from "./property.service";
 
-@Controller("property")
+@ApiTags(ECMSContent.PROPERTY)
+@Controller(`content/${ECMSContent.PROPERTY}`)
 export class PropertyController {
-	constructor(private propertyService: PropertyService) {}
+	constructor(private propertyService: PropertyService) { }
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IProperty> {

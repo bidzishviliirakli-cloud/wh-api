@@ -40,9 +40,7 @@ export class PropertyService {
 		}
 
 		if (agent) {
-			filteredData = filteredData.filter(
-				(el) => el?.attributes?.agent?.attributes?.name === agent
-			);
+			filteredData = filteredData.filter((el) => el?.attributes?.agent?.attributes?.name === agent);
 		}
 
 		return filteredData;

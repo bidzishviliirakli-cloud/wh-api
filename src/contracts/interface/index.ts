@@ -6,4 +6,7 @@ export * from "./IProperty";
 export * from "./IBlog";
 export * from "./ICompany";
 export * from "./ICreateContentParams";
-export * from "./ICustomerContactRequest"
+export * from "./ICustomerContactRequest";
+export * from "./ICustomerPastExperience";
+export * from "./IDeveloper";
+export * from "./IFaq";

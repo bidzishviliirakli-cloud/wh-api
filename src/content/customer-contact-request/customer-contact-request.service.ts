@@ -3,7 +3,6 @@ import { ICustomerContactRequestPayloadDTO } from "@dto";
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 
-
 @Injectable()
 export class CustomerContactRequestService {
 	content = ECMSContent.CUSTOMER_CONTACT_REQUEST;

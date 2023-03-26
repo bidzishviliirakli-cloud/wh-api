@@ -10,6 +10,7 @@ export interface IProperty {
 	attributes: {
 		title: string;
 		agent: IAgent;
+		pinned: boolean;
 		description: string;
 		size: number;
 		bedroomQuantity: number;

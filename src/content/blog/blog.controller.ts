@@ -1,11 +1,13 @@
-import { IBlog } from "@contracts";
+import { ECMSContent, IBlog } from "@contracts";
 import { Controller, Get, Param } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 
 import { BlogService } from "./blog.service";
 
-@Controller("blog")
+@ApiTags(ECMSContent.BLOG)
+@Controller(`content/${ECMSContent.BLOG}`)
 export class BlogController {
-	constructor(private blogService: BlogService) {}
+	constructor(private blogService: BlogService) { }
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IBlog> {
