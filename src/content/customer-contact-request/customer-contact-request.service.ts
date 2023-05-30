@@ -34,13 +34,7 @@ export class CustomerContactRequestService {
 			name: ccr.attributes.name,
 			phoneNumber: ccr.attributes.phoneNumber,
 			property: {
-				id: ccr.attributes.property.data.id,
-				bedroomQuantity: ccr.attributes.property.data.attributes.bedroomQuantity,
-				description: ccr.attributes.property.data.attributes.description,
-				pinned: ccr.attributes.property.data.attributes.pinned,
-				price: ccr.attributes.property.data.attributes.price,
-				size: ccr.attributes.property.data.attributes.size,
-				title: ccr.attributes.property.data.attributes.title
+				id: ccr.attributes.property.data.id
 			}
 		};
 	}

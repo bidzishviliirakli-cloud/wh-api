@@ -37,15 +37,9 @@ export class AgentService {
 			properties: agent.attributes?.properties?.data?.map((el) => {
 				return {
 					id: el.id,
-					address: el.attributes?.address,
-					bedroomQuantity: el.attributes?.bedroomQuantity,
-					description: el.attributes?.description,
-					pinned: el.attributes?.pinned,
-					price: el.attributes?.price,
-					size: el.attributes?.size,
-					title: el.attributes?.title
 				};
 			})
 		};
 	}
 }
+
