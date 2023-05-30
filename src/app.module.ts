@@ -14,4 +14,4 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 @Module({
 	imports: [ContentModule, StrapiModule]
 })
-export class AppModule { }
+export class AppModule {}

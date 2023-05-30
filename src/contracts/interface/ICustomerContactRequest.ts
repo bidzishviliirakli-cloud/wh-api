@@ -1,3 +1,5 @@
+import { IProperty } from "./IProperty";
+
 export interface ICustomerContactRequest {
 	id: number;
 	attributes: {
@@ -5,7 +7,9 @@ export interface ICustomerContactRequest {
 		lastName: string;
 		email: string;
 		phoneNumber: string;
-		propertyId: string;
+		property: {
+			data: IProperty;
+		};
 		contactDetails: string;
 		createdAt: Date;
 		updatedAt: Date;

@@ -6,7 +6,7 @@ import { CompanyService } from "./company.service";
 @ApiTags(ECMSContent.COMPANY)
 @Controller(`content/${ECMSContent.COMPANY}`)
 export class CompanyController {
-	constructor(private companyService: CompanyService) { }
+	constructor(private companyService: CompanyService) {}
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<ICompany> {

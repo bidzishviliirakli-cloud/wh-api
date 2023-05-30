@@ -9,10 +9,30 @@ export class CustomerPastExperienceService {
 	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<ICustomerPastExperience> {
-		return this.strapiService.getContent({ id, content: this.content });
+		const cpe = await this.strapiService.getContent({ id, content: this.content });
+
+		return this.formatCPE(cpe);
 	}
 
 	async getMany(): Promise<Array<ICustomerPastExperience>> {
-		return this.strapiService.getContent({ content: this.content });
+		const cpes = await this.strapiService.getContent({ content: this.content });
+
+		return cpes.map((el) => this.formatCPE(el));
+	}
+
+	private formatCPE(cpe: ICustomerPastExperience): any {
+		return {
+			id: cpe.id,
+			title: cpe.attributes?.title,
+			stars: cpe.attributes?.stars,
+			text: cpe.attributes?.text,
+			customerFullName: cpe.attributes?.customerFullName,
+			customerImage: {
+				large: cpe.attributes?.customerImage?.data?.attributes?.formats?.large?.url,
+				medium: cpe.attributes?.customerImage?.data?.attributes?.formats?.medium?.url,
+				small: cpe.attributes?.customerImage?.data?.attributes?.formats?.small?.url,
+				thumbnail: cpe.attributes?.customerImage?.data?.attributes?.formats?.thumbnail?.url
+			}
+		};
 	}
 }

@@ -6,7 +6,7 @@ import { CustomerContactRequestModule } from "./customer-contact-request";
 import { CustomerPastExperienceModule } from "./customer-past-experience";
 import { PropertyModule } from "./property";
 import { DeveloperModule } from "./developer";
-import { FaqModule } from './faq';
+import { FaqModule } from "./faq";
 
 @Module({
 	imports: [
@@ -18,6 +18,6 @@ import { FaqModule } from './faq';
 		CustomerPastExperienceModule,
 		DeveloperModule,
 		FaqModule
-	],
+	]
 })
-export class ContentModule { }
+export class ContentModule {}

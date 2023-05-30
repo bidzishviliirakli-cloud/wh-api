@@ -10,15 +10,15 @@ export class PropertyService {
 	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<IProperty> {
-		return this.strapiService.getContent({ id, content: this.content });
+		const property = await this.strapiService.getContent({ id, content: this.content });
+
+		return this.formatProperty(property);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
 		const data: IProperty[] = await this.strapiService.getContent({ content: this.content });
 
-		const filteredData = this.queryFilter(filter, data);
-
-		return filteredData;
+		return this.queryFilter(filter, data).map((el) => this.formatProperty(el));
 	}
 
 	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
@@ -44,5 +44,38 @@ export class PropertyService {
 		}
 
 		return filteredData;
+	}
+
+	//TODO fix interfaces
+
+	private formatProperty(property: IProperty): any {
+		return {
+			id: property.id,
+			address: property.attributes?.address,
+			bedRoomQuantity: property.attributes?.bedroomQuantity,
+			dealType: property.attributes?.dealType?.data?.attributes?.title,
+			description: property.attributes?.description,
+			developer: {
+				title: property.attributes?.developer?.data?.attributes?.title,
+				ceo: property.attributes?.developer?.data?.attributes?.ceo
+			},
+			gallery: property.attributes?.gallery?.data?.map((el) => {
+				const formats = el.attributes?.formats;
+
+				return {
+					large: formats?.large?.url,
+					medium: formats?.medium?.url,
+					small: formats?.small?.url,
+					thumbnail: formats?.thumbnail?.url
+				};
+			}),
+			pinned: property.attributes?.pinned,
+			amenities: property.attributes?.propertyAmenities?.data?.map((el) => el?.attributes?.title),
+			category: property.attributes?.propertyCategory?.data?.attributes?.title,
+			location: property.attributes?.propertyLocation?.data?.attributes?.title,
+			size: property.attributes?.size,
+			title: property.attributes?.title,
+			price: property.attributes?.price
+		};
 	}
 }

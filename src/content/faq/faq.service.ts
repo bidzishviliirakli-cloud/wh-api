@@ -1,19 +1,31 @@
-import { ECMSContent } from '@contracts';
-import { Injectable } from '@nestjs/common';
-import { StrapiService } from '@strapi';
-import { IFaq } from '@contracts';
+import { ECMSContent } from "@contracts";
+import { Injectable } from "@nestjs/common";
+import { StrapiService } from "@strapi";
+import { IFaq } from "@contracts";
 
 @Injectable()
 export class FaqService {
-    content = ECMSContent.FAQ;
+	content = ECMSContent.FAQ;
 
-    constructor(private strapiService: StrapiService) { }
+	constructor(private strapiService: StrapiService) {}
 
-    async getOne(id: string): Promise<IFaq> {
-        return this.strapiService.getContent({ id, content: this.content });
-    }
+	async getOne(id: string): Promise<IFaq> {
+		const faq = await this.strapiService.getContent({ id, content: this.content });
 
-    async getMany(): Promise<Array<IFaq>> {
-        return this.strapiService.getContent({ content: this.content });
-    }
+		return this.formatFaq(faq);
+	}
+
+	async getMany(): Promise<Array<IFaq>> {
+		const faqs = await this.strapiService.getContent({ content: this.content });
+
+		return faqs.map((el) => this.formatFaq(el));
+	}
+
+	private formatFaq(faq: IFaq): any {
+		return {
+			id: faq.id,
+			answer: faq.attributes?.answer,
+			question: faq.attributes?.question
+		};
+	}
 }

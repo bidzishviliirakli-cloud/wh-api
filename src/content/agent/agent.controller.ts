@@ -7,7 +7,7 @@ import { AgentService } from "./agent.service";
 @ApiTags(ECMSContent.AGENT)
 @Controller(`content/${ECMSContent.AGENT}`)
 export class AgentController {
-	constructor(private agentService: AgentService) { }
+	constructor(private agentService: AgentService) {}
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IAgent> {

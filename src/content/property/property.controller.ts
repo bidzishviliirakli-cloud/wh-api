@@ -7,7 +7,7 @@ import { PropertyService } from "./property.service";
 @ApiTags(ECMSContent.PROPERTY)
 @Controller(`content/${ECMSContent.PROPERTY}`)
 export class PropertyController {
-	constructor(private propertyService: PropertyService) { }
+	constructor(private propertyService: PropertyService) {}
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IProperty> {

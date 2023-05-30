@@ -7,7 +7,7 @@ import { BlogService } from "./blog.service";
 @ApiTags(ECMSContent.BLOG)
 @Controller(`content/${ECMSContent.BLOG}`)
 export class BlogController {
-	constructor(private blogService: BlogService) { }
+	constructor(private blogService: BlogService) {}
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IBlog> {

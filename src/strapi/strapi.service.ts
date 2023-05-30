@@ -17,8 +17,8 @@ export class StrapiService {
 		try {
 			strapiResponse = await firstValueFrom(this.httpService.get(url));
 		} catch (error) {
-			let status = error.response.status || HttpStatus.INTERNAL_SERVER_ERROR;
-			let message = error.response.statusText || EHttpCode.INTERNAL_SERVER_ERROR;
+			let status = error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+			let message = error.response?.statusText || EHttpCode.INTERNAL_SERVER_ERROR;
 
 			throw new HttpException(message, status);
 		}
@@ -35,8 +35,8 @@ export class StrapiService {
 		try {
 			strapiResponse = await firstValueFrom(this.httpService.post(url, { data }));
 		} catch (error) {
-			let status = error.response.status || HttpStatus.INTERNAL_SERVER_ERROR;
-			let message = error.response.statusText || EHttpCode.INTERNAL_SERVER_ERROR;
+			let status = error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+			let message = error.response?.statusText || EHttpCode.INTERNAL_SERVER_ERROR;
 
 			throw new HttpException(message, status);
 		}

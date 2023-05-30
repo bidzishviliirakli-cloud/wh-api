@@ -7,7 +7,7 @@ import { CustomerContactRequestService } from "./customer-contact-request.servic
 @ApiTags(ECMSContent.CUSTOMER_CONTACT_REQUEST)
 @Controller(`content/${ECMSContent.CUSTOMER_CONTACT_REQUEST}`)
 export class CustomerContactRequestController {
-	constructor(private customerContactRequestService: CustomerContactRequestService) { }
+	constructor(private customerContactRequestService: CustomerContactRequestService) {}
 
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<ICustomerContactRequest> {

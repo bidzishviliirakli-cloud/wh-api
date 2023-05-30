@@ -8,20 +8,21 @@ import { IFaq } from "./IFaq";
 import { IProperty } from "./IProperty";
 
 export interface IGetContentResponse {
-	data: IAgent
-	| Array<IAgent>
-	| IProperty
-	| Array<IProperty>
-	| IBlog
-	| Array<IBlog>
-	| ICompany
-	| Array<ICompany>
-	| ICustomerContactRequest
-	| Array<ICustomerContactRequest>
-	| ICustomerPastExperience
-	| Array<ICustomerPastExperience>
-	| IDeveloper
-	| Array<IDeveloper>
-	| IFaq
-	| Array<IFaq>
+	data:
+		| IAgent
+		| Array<IAgent>
+		| IProperty
+		| Array<IProperty>
+		| IBlog
+		| Array<IBlog>
+		| ICompany
+		| Array<ICompany>
+		| ICustomerContactRequest
+		| Array<ICustomerContactRequest>
+		| ICustomerPastExperience
+		| Array<ICustomerPastExperience>
+		| IDeveloper
+		| Array<IDeveloper>
+		| IFaq
+		| Array<IFaq>;
 }

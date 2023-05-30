@@ -4,6 +4,7 @@ import { IPropertyAmenity } from "./IPropertyAmenity";
 import { IPropertyCategory } from "./IPropertyCategory";
 import { IStrapiImage } from "./IStrapiImage";
 import { IAgent } from "./IAgent";
+import { IDeveloper } from "./IDeveloper";
 
 export interface IProperty {
 	id: number;
@@ -35,6 +36,8 @@ export interface IProperty {
 		propertyLocation: {
 			data: IPropertyLocation;
 		};
-		developer: object;
+		developer: {
+			data: IDeveloper;
+		};
 	};
 }
