@@ -28,7 +28,10 @@ export class CompanyService {
 			ceo: company.attributes?.ceo,
 			email: company.attributes?.email,
 			phoneNumber: company.attributes?.phoneNumber,
-			title: company.attributes?.title
+			title: company.attributes?.title,
+			createdAt: company.attributes?.createdAt,
+			publishedAt: company.attributes?.publishedAt,
+			updatedAt: company.attributes?.updatedAt,
 		};
 	}
 }

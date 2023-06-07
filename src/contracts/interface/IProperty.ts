@@ -10,7 +10,6 @@ export interface IProperty {
 	id: number;
 	attributes: {
 		title: string;
-		agent: IAgent;
 		pinned: boolean;
 		description: string;
 		size: number;
@@ -20,6 +19,9 @@ export interface IProperty {
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
+		agent:{
+			data: IAgent
+		};
 		propertyAmenities: {
 			data: Array<IPropertyAmenity>;
 		};

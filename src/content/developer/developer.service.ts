@@ -24,7 +24,10 @@ export class DeveloperService {
 		return {
 			id: developer.id,
 			ceo: developer.attributes?.ceo,
-			title: developer.attributes?.title
+			title: developer.attributes?.title,
+			createdAt: developer.attributes?.createdAt,
+			publishedAt: developer.attributes?.publishedAt,
+			updatedAt: developer.attributes?.updatedAt,
 		};
 	}
 }

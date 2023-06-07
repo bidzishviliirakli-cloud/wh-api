@@ -35,7 +35,10 @@ export class CustomerContactRequestService {
 			phoneNumber: ccr.attributes.phoneNumber,
 			property: {
 				id: ccr.attributes.property.data.id
-			}
+			},
+			createdAt: ccr.attributes?.createdAt,
+			publishedAt: ccr.attributes?.publishedAt,
+			updatedAt: ccr.attributes?.updatedAt,
 		};
 	}
 }

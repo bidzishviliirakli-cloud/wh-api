@@ -25,7 +25,10 @@ export class FaqService {
 		return {
 			id: faq.id,
 			answer: faq.attributes?.answer,
-			question: faq.attributes?.question
+			question: faq.attributes?.question,
+			createdAt: faq.attributes?.createdAt,
+			publishedAt: faq.attributes?.publishedAt,
+			updatedAt: faq.attributes?.updatedAt,
 		};
 	}
 }

@@ -32,13 +32,23 @@ export class AgentService {
 				large: agent.attributes?.profilePicture?.data?.attributes?.formats?.large?.url,
 				medium: agent.attributes?.profilePicture?.data?.attributes?.formats?.medium?.url,
 				small: agent.attributes?.profilePicture?.data?.attributes?.formats?.small?.url,
-				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url
+				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
+				url: agent.attributes?.profilePicture?.data?.attributes?.url
 			},
 			properties: agent.attributes?.properties?.data?.map((el) => {
 				return {
 					id: el.id,
 				};
-			})
+			}),
+			blogs: agent.attributes?.blogs?.data?.map((el) => {
+				return {
+					id: el.id,
+				};
+			}),
+			createdAt: agent.attributes?.createdAt,
+			publishedAt: agent.attributes?.publishedAt,
+			updatedAt: agent.attributes?.updatedAt,
+
 		};
 	}
 }

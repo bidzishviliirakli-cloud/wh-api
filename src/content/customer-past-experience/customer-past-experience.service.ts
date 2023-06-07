@@ -32,7 +32,10 @@ export class CustomerPastExperienceService {
 				medium: cpe.attributes?.customerImage?.data?.attributes?.formats?.medium?.url,
 				small: cpe.attributes?.customerImage?.data?.attributes?.formats?.small?.url,
 				thumbnail: cpe.attributes?.customerImage?.data?.attributes?.formats?.thumbnail?.url
-			}
+			},
+			createdAt: cpe.attributes?.createdAt,
+			publishedAt: cpe.attributes?.publishedAt,
+			updatedAt: cpe.attributes?.updatedAt,
 		};
 	}
 }

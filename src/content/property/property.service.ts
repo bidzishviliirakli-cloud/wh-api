@@ -40,7 +40,7 @@ export class PropertyService {
 		}
 
 		if (agent) {
-			filteredData = filteredData.filter((el) => el?.attributes?.agent?.attributes?.name === agent);
+			filteredData = filteredData.filter((el) => el?.attributes?.agent?.data?.attributes?.name === agent);
 		}
 
 		return filteredData;
@@ -66,16 +66,21 @@ export class PropertyService {
 					large: formats?.large?.url,
 					medium: formats?.medium?.url,
 					small: formats?.small?.url,
-					thumbnail: formats?.thumbnail?.url
+					thumbnail: formats?.thumbnail?.url,
+					url: el.attributes.url
 				};
 			}),
+			agent: property.attributes.agent.data.id,
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => el?.attributes?.title),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
 			location: property.attributes?.propertyLocation?.data?.attributes?.title,
 			size: property.attributes?.size,
 			title: property.attributes?.title,
-			price: property.attributes?.price
+			price: property.attributes?.price,
+			createdAt: property.attributes?.createdAt,
+			publishedAt: property.attributes?.publishedAt,
+			updatedAt: property.attributes?.updatedAt,
 		};
 	}
 }
