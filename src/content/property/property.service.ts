@@ -70,7 +70,7 @@ export class PropertyService {
 					url: el.attributes.url
 				};
 			}),
-			agent: property.attributes.agent.data.id,
+			agent: property.attributes?.agent?.data?.id,
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => el?.attributes?.title),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
