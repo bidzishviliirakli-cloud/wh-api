@@ -44,7 +44,7 @@ export class BlogService {
 				thumbnail: blog.attributes?.cover?.data?.attributes?.formats?.thumbnail?.url,
 				url: blog.attributes?.cover?.data?.attributes?.url
 			},
-			gallery: blog.attributes.gallery.data.map( el => {
+			gallery: blog.attributes?.gallery?.data?.map( el => {
 				const formated= {
 					large: el.attributes?.formats?.large?.url,
 					medium: el.attributes?.formats?.medium?.url,
