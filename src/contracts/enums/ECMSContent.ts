@@ -10,5 +10,5 @@ export enum ECMSContent {
 	PROPERTY = "properties",
 	PROPERTY_AMENITY = "property-amenities",
 	PROPERTY_CATEGORY = "property-categories",
-	LOCATION = "locations"
+	CITY = "cities"
 }

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { ECMSContent, IProperty } from "@contracts";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
+import { ICity } from "src/contracts/interface/ICity";
 
 @Injectable()
 export class PropertyService {
@@ -21,12 +22,23 @@ export class PropertyService {
 		return this.queryFilter(filter, data).map((el) => this.formatProperty(el));
 	}
 
+	async getLocations(){
+		const data: ICity[] = await this.strapiService.getContent({ content: ECMSContent.CITY });
+
+		return data.map((el) => this.formatCity(el));
+ 
+	}
+
 	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
-		const { location, dealType, category, agent } = filter;
+		const { city, district, dealType, category, agent } = filter;
 		let filteredData = data;
 
-		if (location) {
-			filteredData = data.filter((el) => el?.attributes?.propertyLocation?.data?.attributes?.title === location);
+		if (city) {
+			filteredData = data.filter((el) => el?.attributes?.city?.data?.attributes?.name === city);
+		}
+
+		if (district) {
+			filteredData = data.filter((el) => el?.attributes?.district?.data?.attributes?.name === district);
 		}
 
 		if (dealType) {
@@ -51,7 +63,7 @@ export class PropertyService {
 	private formatProperty(property: IProperty): any {
 		return {
 			id: property.id,
-			address: property.attributes?.address,
+			streetAddress: property.attributes?.streetAddress,
 			bedRoomQuantity: property.attributes?.bedroomQuantity,
 			dealType: property.attributes?.dealType?.data?.attributes?.title,
 			description: property.attributes?.description,
@@ -74,7 +86,8 @@ export class PropertyService {
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => el?.attributes?.title),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
-			location: property.attributes?.propertyLocation?.data?.attributes?.title,
+			city: property.attributes?.city?.data?.attributes?.name,
+			district: property.attributes?.district?.data?.attributes?.name,
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: property.attributes?.price,
@@ -82,5 +95,16 @@ export class PropertyService {
 			publishedAt: property.attributes?.publishedAt,
 			updatedAt: property.attributes?.updatedAt,
 		};
+	}
+
+	private formatCity(city: ICity): any{
+		return {
+			id: city?.id,
+			name: city?.attributes?.name,
+			districts: city?.attributes?.districts.data.map( el => el.attributes.name ),
+			createdAt: city.attributes?.createdAt,
+			publishedAt: city.attributes?.publishedAt,
+			updatedAt: city.attributes?.updatedAt,
+		}
 	}
 }

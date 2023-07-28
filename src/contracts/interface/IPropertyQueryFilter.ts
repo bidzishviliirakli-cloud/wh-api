@@ -1,6 +1,7 @@
 export interface IPropertyQueryFilter {
 	dealType?: string;
-	location?: string;
+	city?: string;
 	category?: string;
 	agent?: string;
+	district?: string
 }

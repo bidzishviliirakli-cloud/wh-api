@@ -1,10 +1,11 @@
 import { IDealType } from "./IDealType";
-import { IPropertyLocation } from "./IPropertyLocation";
+import { ICity } from "./ICity";
 import { IPropertyAmenity } from "./IPropertyAmenity";
 import { IPropertyCategory } from "./IPropertyCategory";
 import { IStrapiImage } from "./IStrapiImage";
 import { IAgent } from "./IAgent";
 import { IDeveloper } from "./IDeveloper";
+import { IDistrict } from "./IDistrict";
 
 export interface IProperty {
 	id: number;
@@ -15,7 +16,7 @@ export interface IProperty {
 		size: number;
 		bedroomQuantity: number;
 		price: number;
-		address: string;
+		streetAddress: string;
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
@@ -35,11 +36,15 @@ export interface IProperty {
 		gallery: {
 			data: Array<IStrapiImage>;
 		};
-		propertyLocation: {
-			data: IPropertyLocation;
+		city: {
+			data: ICity;
 		};
+		district: {
+			data: IDistrict;
+		}
 		developer: {
 			data: IDeveloper;
 		};
+
 	};
 }
