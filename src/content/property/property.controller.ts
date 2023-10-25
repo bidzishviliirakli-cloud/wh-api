@@ -14,6 +14,17 @@ export class PropertyController {
 	getLocations(): Promise<Array<ICity>> {
 		return this.propertyService.getLocations();
 	}
+
+	@Get("categories")
+	getPropertyCategories(){
+		return this.propertyService.getPropertyCategories();
+	}
+
+	@Get("dealTypes")
+	getDealType(){
+		return this.propertyService.getDealTypes();
+	}
+
 	
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IProperty> {
@@ -24,5 +35,6 @@ export class PropertyController {
 	getMany(@Query() filter): Promise<Array<IProperty>> {
 		return this.propertyService.getMany(filter);
 	}
+
 
 }

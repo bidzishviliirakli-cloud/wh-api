@@ -29,6 +29,18 @@ export class PropertyService {
  
 	}
 
+	async getPropertyCategories(){
+		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY });
+
+		return data.map((el) => this.formatCategory(el));
+	}
+
+	async getDealTypes(){
+		const data = await this.strapiService.getContent({ content: ECMSContent.DEAL_TYPE });
+
+		return data.map(el => this.formatDealType(el));
+	}
+
 	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
 		const { city, district, dealType, category, agent } = filter;
 		let filteredData = data;
@@ -105,6 +117,20 @@ export class PropertyService {
 			createdAt: city.attributes?.createdAt,
 			publishedAt: city.attributes?.publishedAt,
 			updatedAt: city.attributes?.updatedAt,
+		}
+	}
+
+	private formatCategory(category: any): any {
+		return {
+			id: category.id,
+			title: category.attributes.title
+		}
+	}
+
+	private formatDealType(dealType: any): any {
+		return {
+			id: dealType.id,
+			title: dealType.attributes.title
 		}
 	}
 }
