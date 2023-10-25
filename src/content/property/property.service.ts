@@ -28,12 +28,17 @@ export class PropertyService {
 		return data.map((el) => this.formatCity(el));
  
 	}
+	
+
+	//TODO: add interfaces
 
 	async getPropertyCategories(){
 		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY });
 
 		return data.map((el) => this.formatCategory(el));
 	}
+
+	//TODO: add interfaces
 
 	async getDealTypes(){
 		const data = await this.strapiService.getContent({ content: ECMSContent.DEAL_TYPE });
@@ -112,7 +117,7 @@ export class PropertyService {
 	private formatCity(city: ICity): any{
 		return {
 			id: city?.id,
-			name: city?.attributes?.name,
+			title: city?.attributes?.name,
 			districts: city?.attributes?.districts.data.map( el => el.attributes.name ),
 			createdAt: city.attributes?.createdAt,
 			publishedAt: city.attributes?.publishedAt,

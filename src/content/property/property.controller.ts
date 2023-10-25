@@ -14,11 +14,15 @@ export class PropertyController {
 	getLocations(): Promise<Array<ICity>> {
 		return this.propertyService.getLocations();
 	}
+	//TODO: add interfaces
+
 
 	@Get("categories")
 	getPropertyCategories(){
 		return this.propertyService.getPropertyCategories();
 	}
+
+	//TODO: add interfaces
 
 	@Get("dealTypes")
 	getDealType(){
