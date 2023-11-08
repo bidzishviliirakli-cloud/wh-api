@@ -1,14 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDefined, IsEmail, IsString } from "class-validator";
+import { IsDefined, IsEmail, IsOptional, IsString } from "class-validator";
 
 export class ICustomerContactRequestPayloadDTO {
 	@ApiProperty({ description: "Customer name", type: String })
-	@IsDefined()
+	@IsOptional()
 	@IsString()
 	name: string;
 
 	@ApiProperty({ description: "Customer lastName", type: String })
-	@IsDefined()
+	@IsOptional()
 	@IsString()
 	lastName: string;
 
@@ -18,17 +18,17 @@ export class ICustomerContactRequestPayloadDTO {
 	email: string;
 
 	@ApiProperty({ description: "Customer phone number", type: String })
-	@IsDefined()
+	@IsOptional()
 	@IsString()
 	phoneNumber: string;
 
 	@ApiProperty({ description: "Property Id", type: String })
-	@IsDefined()
+	@IsOptional()
 	@IsString()
 	property: string;
 
 	@ApiProperty({ description: "Customer contact details, random information", type: String })
-	@IsDefined()
+	@IsOptional()
 	@IsString()
 	contactDetails: string;
 }
