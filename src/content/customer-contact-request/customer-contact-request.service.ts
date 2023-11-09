@@ -28,13 +28,13 @@ export class CustomerContactRequestService {
 	private formatCCR(ccr: ICustomerContactRequest): any {
 		return {
 			id: ccr.id,
-			contactDetails: ccr.attributes.contactDetails,
-			email: ccr.attributes.email,
-			lastName: ccr.attributes.lastName,
-			name: ccr.attributes.name,
-			phoneNumber: ccr.attributes.phoneNumber,
+			contactDetails: ccr?.attributes?.contactDetails,
+			email: ccr?.attributes?.email,
+			lastName: ccr?.attributes?.lastName,
+			name: ccr?.attributes?.name,
+			phoneNumber: ccr?.attributes?.phoneNumber,
 			property: {
-				id: ccr.attributes.property.data.id
+				id: ccr?.attributes?.property?.data?.id
 			},
 			createdAt: ccr.attributes?.createdAt,
 			publishedAt: ccr.attributes?.publishedAt,
