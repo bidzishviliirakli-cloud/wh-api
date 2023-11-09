@@ -7,6 +7,7 @@ import { CustomerPastExperienceModule } from "./customer-past-experience";
 import { PropertyModule } from "./property";
 import { DeveloperModule } from "./developer";
 import { FaqModule } from "./faq";
+import { AboutModule } from "./about";
 
 @Module({
 	imports: [
@@ -17,7 +18,8 @@ import { FaqModule } from "./faq";
 		CustomerContactRequestModule,
 		CustomerPastExperienceModule,
 		DeveloperModule,
-		FaqModule
+		FaqModule,
+		AboutModule
 	]
 })
 export class ContentModule {}
