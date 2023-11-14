@@ -4,17 +4,19 @@ import { ApiTags } from "@nestjs/swagger";
 import { CompanyService } from "./company.service";
 
 @ApiTags(ECMSContent.COMPANY)
-@Controller(`content/${ECMSContent.COMPANY}`)
+@Controller(`content/company`)
 export class CompanyController {
 	constructor(private companyService: CompanyService) {}
 
-	@Get(":id")
-	getById(@Param("id") id: string): Promise<ICompany> {
-		return this.companyService.getOne(id);
-	}
 
 	@Get()
-	getMany(): Promise<Array<ICompany>> {
-		return this.companyService.getMany();
+	getCompany(): Promise<ICompany> {
+		return this.companyService.getCompany();
 	}
+
+	@Get("offices")
+	getOffices(): Promise<Array<any>> {
+		return this.companyService.getOffices();
+	}
+	
 }
