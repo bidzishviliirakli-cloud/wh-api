@@ -11,6 +11,7 @@ export interface IProperty {
 	id: number;
 	attributes: {
 		title: string;
+		aboutProperty: string;
 		pinned: boolean;
 		description: string;
 		size: number;

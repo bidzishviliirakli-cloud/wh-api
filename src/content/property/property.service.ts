@@ -84,6 +84,7 @@ export class PropertyService {
 			bedRoomQuantity: property.attributes?.bedroomQuantity,
 			dealType: property.attributes?.dealType?.data?.attributes?.title,
 			description: property.attributes?.description,
+			aboutProperty: property.attributes?.aboutProperty,
 			developer: {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
@@ -101,7 +102,12 @@ export class PropertyService {
 			}),
 			agent: property.attributes?.agent?.data?.id,
 			pinned: property.attributes?.pinned,
-			amenities: property.attributes?.propertyAmenities?.data?.map((el) => el?.attributes?.title),
+			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
+				const title = el?.attributes?.title;
+				const svg = el?.attributes?.title;
+
+				return { title, svg }
+			}),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
 			city: property.attributes?.city?.data?.attributes?.name,
 			district: property.attributes?.district?.data?.attributes?.name,
