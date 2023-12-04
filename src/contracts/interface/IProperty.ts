@@ -14,6 +14,8 @@ export interface IProperty {
 		aboutProperty: string;
 		pinned: boolean;
 		description: string;
+		parking: number;
+		bathroom: number;
 		size: number;
 		bedroomQuantity: number;
 		price: number;

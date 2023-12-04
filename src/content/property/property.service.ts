@@ -85,6 +85,8 @@ export class PropertyService {
 			dealType: property.attributes?.dealType?.data?.attributes?.title,
 			description: property.attributes?.description,
 			aboutProperty: property.attributes?.aboutProperty,
+			parking: property.attributes?.parking,
+			bathroom: property.attributes?.bathroom,
 			developer: {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
