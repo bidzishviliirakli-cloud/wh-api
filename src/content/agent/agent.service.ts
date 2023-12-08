@@ -1,26 +1,50 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { IAgent, ECMSContent } from "@contracts";
+import { PropertyService } from "../property";
+import { BlogService } from "../blog";
 
 @Injectable()
 export class AgentService {
 	content = ECMSContent.AGENT;
 
-	constructor(private strapiService: StrapiService) {}
+	constructor(private strapiService: StrapiService, private propertyService: PropertyService, private blogService: BlogService) {}
 
 	async getOne(id: string): Promise<IAgent> {
 		const agent = await this.strapiService.getContent({ id, content: this.content });
+		const formatedAgent = await this.formatAgent(agent);
 
-		return this.formatAgent(agent);
+		return formatedAgent;
 	}
 
 	async getMany(): Promise<Array<IAgent>> {
 		const agents = await this.strapiService.getContent({ content: this.content });
+		const formatedAgents = [];
 
-		return agents.map((el) => this.formatAgent(el));
+		for(let i =0 ; i< agents.length ; i++){
+			formatedAgents.push(await this.formatAgent(agents[i]));
+		}
+
+
+		return formatedAgents;
 	}
 
-	private formatAgent(agent: IAgent): any {
+	private async formatAgent(agent: IAgent):  Promise<any> {
+		const propertyIds = agent.attributes?.properties?.data;
+		const properties = [];
+		const blogIds = agent.attributes?.blogs?.data;
+		const blogs = [];
+
+		for(let i = 0; i < propertyIds.length; i++ ){
+			const property = await this.strapiService.getContent({  id: propertyIds[i].id.toString() , content: ECMSContent.PROPERTY});
+			properties.push(this.propertyService.formatProperty(property))
+		}	
+
+		for(let i = 0; i < blogIds.length; i++ ){
+			const blog = await this.strapiService.getContent({  id: blogIds[i].id.toString() , content: ECMSContent.BLOG});
+			blogs.push(this.blogService.formatBlog(blog));
+		}
+
 		return {
 			id: agent.id,
 			about: agent.attributes?.about,
@@ -35,16 +59,8 @@ export class AgentService {
 				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
 				url: agent.attributes?.profilePicture?.data?.attributes?.url
 			},
-			properties: agent.attributes?.properties?.data?.map((el) => {
-				return {
-					id: el.id,
-				};
-			}),
-			blogs: agent.attributes?.blogs?.data?.map((el) => {
-				return {
-					id: el.id,
-				};
-			}),
+			properties,
+			blogs,
 			createdAt: agent.attributes?.createdAt,
 			publishedAt: agent.attributes?.publishedAt,
 			updatedAt: agent.attributes?.updatedAt,

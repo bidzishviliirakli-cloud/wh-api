@@ -4,9 +4,11 @@ import { StrapiModule } from "@strapi";
 
 import { AgentController } from "./agent.controller";
 import { AgentService } from "./agent.service";
+import { PropertyModule } from "../property";
+import { BlogModule } from "../blog";
 
 @Module({
-	imports: [StrapiModule],
+	imports: [StrapiModule, PropertyModule, BlogModule],
 	controllers: [AgentController],
 	providers: [AgentService]
 })

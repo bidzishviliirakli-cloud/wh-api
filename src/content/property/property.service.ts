@@ -77,7 +77,7 @@ export class PropertyService {
 
 	//TODO fix interfaces
 
-	private formatProperty(property: IProperty): any {
+	public formatProperty(property: IProperty): any {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,

@@ -8,6 +8,7 @@ import { BlogService } from "./blog.service";
 @Module({
 	imports: [StrapiModule],
 	controllers: [BlogController],
-	providers: [BlogService]
+	providers: [BlogService],
+	exports: [BlogService]
 })
 export class BlogModule {}

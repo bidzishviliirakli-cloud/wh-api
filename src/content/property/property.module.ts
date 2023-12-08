@@ -8,6 +8,7 @@ import { PropertyService } from "./property.service";
 @Module({
 	imports: [StrapiModule],
 	controllers: [PropertyController],
-	providers: [PropertyService]
+	providers: [PropertyService],
+	exports: [PropertyService]
 })
 export class PropertyModule {}

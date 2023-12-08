@@ -20,7 +20,7 @@ export class BlogService {
 		return blogs.map((el) => this.formatBlog(el));
 	}
 
-	private formatBlog(blog: IBlog): any {
+	public formatBlog(blog: IBlog): any {
 		return {
 			id: blog.id,
 			title: blog.attributes?.title,
