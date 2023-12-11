@@ -12,7 +12,7 @@ export class AgentService {
 
 	async getOne(id: string): Promise<IAgent> {
 		const agent = await this.strapiService.getContent({ id, content: this.content });
-		const formatedAgent = await this.formatAgent(agent);
+		const formatedAgent = await this.formatAgent(agent, true);
 
 		return formatedAgent;
 	}
@@ -22,28 +22,15 @@ export class AgentService {
 		const formatedAgents = [];
 
 		for(let i =0 ; i< agents.length ; i++){
-			formatedAgents.push(await this.formatAgent(agents[i]));
+			formatedAgents.push(await this.formatAgent(agents[i], false));
 		}
 
 
 		return formatedAgents;
 	}
 
-	private async formatAgent(agent: IAgent):  Promise<any> {
-		const propertyIds = agent.attributes?.properties?.data;
-		const properties = [];
-		const blogIds = agent.attributes?.blogs?.data;
-		const blogs = [];
-
-		for(let i = 0; i < propertyIds.length; i++ ){
-			const property = await this.strapiService.getContent({  id: propertyIds[i].id.toString() , content: ECMSContent.PROPERTY});
-			properties.push(this.propertyService.formatProperty(property))
-		}	
-
-		for(let i = 0; i < blogIds.length; i++ ){
-			const blog = await this.strapiService.getContent({  id: blogIds[i].id.toString() , content: ECMSContent.BLOG});
-			blogs.push(this.blogService.formatBlog(blog));
-		}
+	private async formatAgent(agent: IAgent, detailed: boolean):  Promise<any> {
+		const { properties, blogs } = await this.getDetailedInfo(agent,detailed);
 
 		return {
 			id: agent.id,
@@ -66,6 +53,29 @@ export class AgentService {
 			updatedAt: agent.attributes?.updatedAt,
 
 		};
+	}
+
+	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any>{
+		if(!detailed){
+			return { properties: agent.attributes.properties, blogs: agent.attributes.blogs }
+		}
+
+		const propertyIds = agent.attributes?.properties?.data;
+		const properties = [];
+		const blogIds = agent.attributes?.blogs?.data;
+		const blogs = [];
+
+		for(let i = 0; i < propertyIds.length; i++ ){
+			const property = await this.strapiService.getContent({  id: propertyIds[i].id.toString() , content: ECMSContent.PROPERTY});
+			properties.push(this.propertyService.formatProperty(property))
+		}	
+
+		for(let i = 0; i < blogIds.length; i++ ){
+			const blog = await this.strapiService.getContent({  id: blogIds[i].id.toString() , content: ECMSContent.BLOG});
+			blogs.push(this.blogService.formatBlog(blog));
+		}
+
+		return { properties, blogs }
 	}
 }
 
