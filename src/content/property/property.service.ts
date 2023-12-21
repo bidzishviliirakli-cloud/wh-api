@@ -115,8 +115,10 @@ export class PropertyService {
 			district: property.attributes?.district?.data?.attributes?.name,
 			size: property.attributes?.size,
 			title: property.attributes?.title,
-			priceUsd: property.attributes?.price,
-			priceGel: property.attributes?.price,
+			price: {
+				usd: property.attributes?.price,
+				gel: property.attributes?.price
+			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
 			updatedAt: property.attributes?.updatedAt,
