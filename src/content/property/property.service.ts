@@ -15,10 +15,10 @@ export class PropertyService {
 
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
-		const priceInGel = await Util.convertUsdToGel(property.attributes.price);
+		const priceInUsd = await Util.convertGelToUsd(property.attributes.price);
 
 
-		return this.formatProperty(property, priceInGel);
+		return this.formatProperty(property, priceInUsd);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
@@ -82,7 +82,7 @@ export class PropertyService {
 
 	//TODO fix interfaces
 
-	public formatProperty(property: IProperty, priceInGel?: number): any {
+	public formatProperty(property: IProperty, priceInUsd?: number): any {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
@@ -121,8 +121,8 @@ export class PropertyService {
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {
-				usd: property.attributes?.price,
-				gel: priceInGel || null
+				usd: priceInUsd,
+				gel: property.attributes?.price 
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
