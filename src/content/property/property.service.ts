@@ -117,7 +117,7 @@ export class PropertyService {
 			title: property.attributes?.title,
 			price: {
 				usd: property.attributes?.price,
-				gel: property.attributes?.price
+				gel: 90909090
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
