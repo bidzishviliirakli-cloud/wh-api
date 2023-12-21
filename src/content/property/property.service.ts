@@ -1,19 +1,24 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { ECMSContent, IProperty } from "@contracts";
+import { Util } from "@util";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
 import { ICity } from "src/contracts/interface/ICity";
+
 
 @Injectable()
 export class PropertyService {
 	content = ECMSContent.PROPERTY;
 
+
 	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
+		const priceInGel = await Util.convertUsdToGel(property.attributes.price);
 
-		return this.formatProperty(property);
+
+		return this.formatProperty(property, priceInGel);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
@@ -77,7 +82,7 @@ export class PropertyService {
 
 	//TODO fix interfaces
 
-	public formatProperty(property: IProperty): any {
+	public formatProperty(property: IProperty, priceInGel?: number): any {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
@@ -117,7 +122,7 @@ export class PropertyService {
 			title: property.attributes?.title,
 			price: {
 				usd: property.attributes?.price,
-				gel: 90909090
+				gel: priceInGel || null
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
