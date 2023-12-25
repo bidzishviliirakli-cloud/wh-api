@@ -126,8 +126,8 @@ export class PropertyService {
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {
-				usd: priceInUsd.toLocaleString("en-US"),
-				gel: property.attributes?.price.toLocaleString("ge-GE")
+				usd: priceInUsd?.toLocaleString("en-US"),
+				gel: property.attributes?.price?.toLocaleString("ge-GE")
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,

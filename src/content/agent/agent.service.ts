@@ -3,6 +3,7 @@ import { StrapiService } from "@strapi";
 import { IAgent, ECMSContent } from "@contracts";
 import { PropertyService } from "../property";
 import { BlogService } from "../blog";
+import { Util } from "@util";
 
 @Injectable()
 export class AgentService {
@@ -67,7 +68,9 @@ export class AgentService {
 
 		for(let i = 0; i < propertyIds.length; i++ ){
 			const property = await this.strapiService.getContent({  id: propertyIds[i].id.toString() , content: ECMSContent.PROPERTY});
-			properties.push(this.propertyService.formatProperty(property))
+			const priceInUsd =  Util.convertGelToUsd(property.attributes.price); 
+
+			properties.push(this.propertyService.formatProperty(property, priceInUsd))
 		}	
 
 		for(let i = 0; i < blogIds.length; i++ ){
