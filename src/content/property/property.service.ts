@@ -15,7 +15,7 @@ export class PropertyService {
 
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
-		const priceInUsd = await Util.convertGelToUsd(property.attributes.price);
+		const priceInUsd =  Util.convertGelToUsd(property.attributes.price);
 
 
 		return this.formatProperty(property, priceInUsd);
@@ -24,7 +24,12 @@ export class PropertyService {
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
 		const data: IProperty[] = await this.strapiService.getContent({ content: this.content });
 
-		return this.queryFilter(filter, data).map((el) => this.formatProperty(el));
+		return this.queryFilter(filter, data).map((el) =>{
+			const priceInUsd =  Util.convertGelToUsd(el.attributes.price); 
+			const formatedProperty = this.formatProperty(el, priceInUsd);
+
+			return formatedProperty;
+		} );
 	}
 
 	async getLocations(){
