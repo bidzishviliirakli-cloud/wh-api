@@ -1,12 +1,13 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { StrapiService } from "@strapi";
-import { ECMSContent, IBlog } from "@contracts";
+import { ECMSContent, IAgent, IBlog } from "@contracts";
+import { AgentService } from "../agent/agent.service";
 
 @Injectable()
 export class BlogService {
 	content = ECMSContent.BLOG;
 
-	constructor(private strapiService: StrapiService) {}
+	constructor( private strapiService: StrapiService, ) {}
 
 	async getOne(id: string): Promise<IBlog> {
 		const blog = await this.strapiService.getContent({ id, content: this.content });
@@ -16,11 +17,15 @@ export class BlogService {
 
 	async getMany(): Promise<Array<IBlog>> {
 		const blogs = await this.strapiService.getContent({ content: this.content });
+		const formatedBlogs = blogs.map(async (el) => await this.formatBlog(el))
 
-		return blogs.map((el) => this.formatBlog(el));
+		return Promise.all(formatedBlogs);
 	}
 
-	public formatBlog(blog: IBlog): any {
+	public async formatBlog(blog: IBlog): Promise<any> {
+		const agent = await this.strapiService.getContent({  id: blog.attributes?.agent?.data?.id.toString() , content: ECMSContent.AGENT});
+
+
 		return {
 			id: blog.id,
 			title: blog.attributes?.title,
@@ -54,10 +59,28 @@ export class BlogService {
 				}
 				return formated;
 			}),
-			agent: blog.attributes?.agent?.data?.id,
+			agent: this.formatAgentForBlog(agent),
 			createdAt: blog.attributes?.createdAt,
 			publishedAt: blog.attributes?.publishedAt,
 			updatedAt: blog.attributes?.updatedAt,
 		}
+	}
+
+	private formatAgentForBlog(agent: IAgent){
+		return {
+			id: agent.id,
+			about: agent.attributes?.about,
+			email: agent.attributes?.email,
+			name: agent.attributes?.name,
+			lastName: agent.attributes?.lastName,
+			phoneNumber: agent.attributes?.phoneNumber,
+			profilePicture: {
+				large: agent.attributes?.profilePicture?.data?.attributes?.formats?.large?.url,
+				medium: agent.attributes?.profilePicture?.data?.attributes?.formats?.medium?.url,
+				small: agent.attributes?.profilePicture?.data?.attributes?.formats?.small?.url,
+				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
+				url: agent.attributes?.profilePicture?.data?.attributes?.url
+			},
+		};
 	}
 }

@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 
 import { StrapiModule } from "@strapi";
 
@@ -8,7 +8,7 @@ import { PropertyModule } from "../property";
 import { BlogModule } from "../blog";
 
 @Module({
-	imports: [StrapiModule, PropertyModule, BlogModule],
+	imports: [StrapiModule, PropertyModule, BlogModule ],
 	controllers: [AgentController],
 	providers: [AgentService]
 })

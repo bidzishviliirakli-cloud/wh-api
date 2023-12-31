@@ -30,7 +30,7 @@ export class AgentService {
 		return formatedAgents;
 	}
 
-	private async formatAgent(agent: IAgent, detailed: boolean):  Promise<any> {
+	public async formatAgent(agent: IAgent, detailed: boolean):  Promise<any> {
 		const { properties, blogs } = await this.getDetailedInfo(agent,detailed);
 
 		return {
@@ -75,7 +75,8 @@ export class AgentService {
 
 		for(let i = 0; i < blogIds.length; i++ ){
 			const blog = await this.strapiService.getContent({  id: blogIds[i].id.toString() , content: ECMSContent.BLOG});
-			blogs.push(this.blogService.formatBlog(blog));
+			const formatedBlog = await this.blogService.formatBlog(blog);
+			blogs.push(formatedBlog);
 		}
 
 		return { properties, blogs }
