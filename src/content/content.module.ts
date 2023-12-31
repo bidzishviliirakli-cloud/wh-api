@@ -8,6 +8,7 @@ import { PropertyModule } from "./property";
 import { DeveloperModule } from "./developer";
 import { FaqModule } from "./faq";
 import { AboutModule } from "./about";
+import { ProjectModule } from "./project"
 
 @Module({
 	imports: [
@@ -19,7 +20,8 @@ import { AboutModule } from "./about";
 		CustomerPastExperienceModule,
 		DeveloperModule,
 		FaqModule,
-		AboutModule
+		AboutModule,
+		ProjectModule
 	]
 })
 export class ContentModule {}
