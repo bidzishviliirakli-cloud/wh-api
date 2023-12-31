@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
-import { ECMSContent, IProperty } from "@contracts";
+import { ECMSContent, IAgent, IProperty } from "@contracts";
 import { Util } from "@util";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
 import { ICity } from "src/contracts/interface/ICity";
@@ -24,12 +24,12 @@ export class PropertyService {
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
 		const data: IProperty[] = await this.strapiService.getContent({ content: this.content });
 
-		return this.queryFilter(filter, data).map((el) =>{
+		return Promise.all(this.queryFilter(filter, data).map(async ( el) =>{
 			const priceInUsd =  Util.convertGelToUsd(el.attributes.price); 
-			const formatedProperty = this.formatProperty(el, priceInUsd);
+			const formatedProperty = await this.formatProperty(el, priceInUsd);
 
 			return formatedProperty;
-		} );
+		} ));
 	}
 
 	async getLocations(){
@@ -87,7 +87,9 @@ export class PropertyService {
 
 	//TODO fix interfaces
 
-	public formatProperty(property: IProperty, priceInUsd?: number): any {
+	public async formatProperty(property: IProperty, priceInUsd?: number): Promise<any> {
+		const agent = await this.strapiService.getContent({  id: property.attributes?.agent?.data?.id.toString() , content: ECMSContent.AGENT});
+
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
@@ -112,7 +114,7 @@ export class PropertyService {
 					url: el.attributes.url
 				};
 			}),
-			agent: property.attributes?.agent?.data?.id,
+			agent: this.formatAgentForProperty(agent),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
 				const title = el?.attributes?.title;
@@ -158,5 +160,23 @@ export class PropertyService {
 			id: dealType.id,
 			title: dealType.attributes.title
 		}
+	}
+
+	private formatAgentForProperty(agent: IAgent){
+		return {
+			id: agent.id,
+			about: agent.attributes?.about,
+			email: agent.attributes?.email,
+			name: agent.attributes?.name,
+			lastName: agent.attributes?.lastName,
+			phoneNumber: agent.attributes?.phoneNumber,
+			profilePicture: {
+				large: agent.attributes?.profilePicture?.data?.attributes?.formats?.large?.url,
+				medium: agent.attributes?.profilePicture?.data?.attributes?.formats?.medium?.url,
+				small: agent.attributes?.profilePicture?.data?.attributes?.formats?.small?.url,
+				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
+				url: agent.attributes?.profilePicture?.data?.attributes?.url
+			},
+		};
 	}
 }
