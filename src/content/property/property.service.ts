@@ -22,14 +22,52 @@ export class PropertyService {
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
-		const data: IProperty[] = await this.strapiService.getContent({ content: this.content });
+		let strapiFilter = "";
 
-		return Promise.all(this.queryFilter(filter, data).map(async ( el) =>{
+		const propertyCategoryFilterList = filter?.category?.split(",");
+		propertyCategoryFilterList.forEach(category =>{
+			if(!Util.isNull(category)){
+				strapiFilter += `filters[propertyCategory][title][$eqi]=${category}&`
+			}
+		} )
+		
+
+		const cityFilterList = filter?.city?.split(",");
+		cityFilterList.forEach(city =>{
+				if(!Util.isNull(city)){
+					strapiFilter += `filters[city][name][$eqi]=${city}&`
+				}
+		} )
+		
+
+		const dealTypeFilterList = filter?.dealType?.split(",");
+		dealTypeFilterList.forEach(dealType =>{
+				if(!Util.isNull(dealType)){
+					strapiFilter += `filters[dealType][title][$eqi]=${dealType}&`
+				}
+			} )
+		
+
+		if(!Util.isNull(filter.text)){
+
+			strapiFilter += `filters[title][$containsi]=${filter.text}&`;
+
+			//TODO: search text in description and streetAdress
+			//strapiFilter += `filters[$or][1][streetAddress][$containsi]=${filter.text}&`;
+			//strapiFilter += `filters[$or][2][aboutProperty][$containsi]=${filter.text}&`;
+		}
+
+
+		
+		const data: IProperty[] = await this.strapiService.getContent({ content: this.content, filter: strapiFilter });
+
+
+		return Promise.all(data.map( async el => {
 			const priceInUsd =  Util.convertGelToUsd(el.attributes.price); 
 			const formatedProperty = await this.formatProperty(el, priceInUsd);
 
 			return formatedProperty;
-		} ));
+		}))
 	}
 
 	async getLocations(){
@@ -57,29 +95,31 @@ export class PropertyService {
 	}
 
 	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
-		const { city, district, dealType, category, agent } = filter;
+		const { city, district, dealType, category, text } = filter;
 		let filteredData = data;
 
-		if (city) {
+		const isNull = (value) => value === "" ||  value === "null" || value === "undefined" || value === null || value === undefined  || value.length === 0
+
+		if (!isNull(city)) {
 			filteredData = data.filter((el) => el?.attributes?.city?.data?.attributes?.name === city);
 		}
 
-		if (district) {
+		if (!isNull(district)) {
 			filteredData = data.filter((el) => el?.attributes?.district?.data?.attributes?.name === district);
 		}
 
-		if (dealType) {
+		if (!isNull(dealType)) {
 			filteredData = filteredData.filter((el) => el?.attributes?.dealType?.data?.attributes?.title === dealType);
 		}
 
-		if (category) {
+		if (!isNull(category)) {
 			filteredData = filteredData.filter(
 				(el) => el?.attributes?.propertyCategory?.data?.attributes?.title === category
 			);
 		}
 
-		if (agent) {
-			filteredData = filteredData.filter((el) => el?.attributes?.agent?.data?.attributes?.name === agent);
+		if (!isNull(text)) {
+			filteredData = filteredData.filter((el) => el?.attributes?.title === text);
 		}
 
 		return filteredData;
@@ -141,10 +181,10 @@ export class PropertyService {
 		return {
 			id: city?.id,
 			title: city?.attributes?.name,
-			districts: city?.attributes?.districts.data.map( el => el.attributes.name ),
-			createdAt: city.attributes?.createdAt,
-			publishedAt: city.attributes?.publishedAt,
-			updatedAt: city.attributes?.updatedAt,
+			districts: city?.attributes?.districts?.data?.map( el => el?.attributes?.name ),
+			createdAt: city?.attributes?.createdAt,
+			publishedAt: city?.attributes?.publishedAt,
+			updatedAt: city?.attributes?.updatedAt,
 		}
 	}
 

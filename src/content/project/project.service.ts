@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
-import { ECMSContent, IProject, IProperty } from "@contracts";
+import { ECMSContent, IProject } from "@contracts";
 
 
 @Injectable()

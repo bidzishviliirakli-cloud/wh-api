@@ -10,6 +10,10 @@ export class Util {
        
     }
 
+    public static isNull(value: string): boolean{
+        return value === "undefined" || value === "null" || value?.length === 0
+    }
+
     private static getConversionRate(){
         //TODO: get proper conversion rate
 
