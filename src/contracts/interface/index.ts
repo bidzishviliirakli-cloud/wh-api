@@ -10,5 +10,5 @@ export * from "./ICustomerContactRequest";
 export * from "./ICustomerPastExperience";
 export * from "./IDeveloper";
 export * from "./IFaq";
-export * from "./IPropertyQueryFilter"
-export * from "./IProject"
+export * from "./IPropertyQueryFilter";
+export * from "./IProject";

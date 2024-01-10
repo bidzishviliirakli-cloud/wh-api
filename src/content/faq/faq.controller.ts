@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ECMSContent, IFaq } from "@contracts";
 import { FaqService } from "./faq.service";
 import { ApiTags } from "@nestjs/swagger";
@@ -14,7 +14,7 @@ export class FaqController {
 	}
 
 	@Get()
-	getMany(): Promise<Array<IFaq>> {
-		return this.faqService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<IFaq>> {
+		return this.faqService.getMany(locale);
 	}
 }

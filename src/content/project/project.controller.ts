@@ -1,5 +1,5 @@
 import { ECMSContent, IProperty } from "@contracts";
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
 import { ProjectService } from "./project.service";
@@ -8,16 +8,14 @@ import { ProjectService } from "./project.service";
 @Controller(`content/${ECMSContent.PROJECT}`)
 export class ProjectController {
 	constructor(private projectService: ProjectService) {}
-	
+
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<any> {
 		return this.projectService.getOne(id);
 	}
 
 	@Get()
-	getMany(): Promise<Array<IProperty>> {
-		return this.projectService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<IProperty>> {
+		return this.projectService.getMany(locale);
 	}
-
-
 }

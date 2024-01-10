@@ -1,15 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { IAgent, ECMSContent, IProperty, IBlog } from "@contracts";
-import { PropertyService } from "../property";
-import { BlogService } from "../blog";
 import { Util } from "@util";
 
 @Injectable()
 export class AgentService {
 	content = ECMSContent.AGENT;
 
-	constructor(private strapiService: StrapiService, private propertyService: PropertyService, private blogService: BlogService) {}
+	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<IAgent> {
 		const agent = await this.strapiService.getContent({ id, content: this.content });
@@ -18,20 +16,19 @@ export class AgentService {
 		return formatedAgent;
 	}
 
-	async getMany(): Promise<Array<IAgent>> {
-		const agents = await this.strapiService.getContent({ content: this.content });
+	async getMany(locale: string): Promise<Array<IAgent>> {
+		const agents = await this.strapiService.getContent({ content: this.content, locale });
 		const formatedAgents = [];
 
-		for(let i =0 ; i< agents.length ; i++){
+		for (let i = 0; i < agents.length; i++) {
 			formatedAgents.push(await this.formatAgent(agents[i], false));
 		}
-
 
 		return formatedAgents;
 	}
 
-	public async formatAgent(agent: IAgent, detailed: boolean):  Promise<any> {
-		const { properties, blogs } = await this.getDetailedInfo(agent,detailed);
+	public async formatAgent(agent: IAgent, detailed: boolean): Promise<any> {
+		const { properties, blogs } = await this.getDetailedInfo(agent, detailed);
 
 		return {
 			id: agent.id,
@@ -51,14 +48,13 @@ export class AgentService {
 			blogs,
 			createdAt: agent.attributes?.createdAt,
 			publishedAt: agent.attributes?.publishedAt,
-			updatedAt: agent.attributes?.updatedAt,
-
+			updatedAt: agent.attributes?.updatedAt
 		};
 	}
 
-	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any>{
-		if(!detailed){
-			return { properties: agent.attributes.properties, blogs: agent.attributes.blogs }
+	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any> {
+		if (!detailed) {
+			return { properties: agent.attributes.properties, blogs: agent.attributes.blogs };
 		}
 
 		const propertyIds = agent.attributes?.properties?.data;
@@ -66,22 +62,28 @@ export class AgentService {
 		const blogIds = agent.attributes?.blogs?.data;
 		const blogs = [];
 
-		for(let i = 0; i < propertyIds.length; i++ ){
-			const property = await this.strapiService.getContent({  id: propertyIds[i].id.toString() , content: ECMSContent.PROPERTY});
-			const priceInUsd =  Util.convertGelToUsd(property.attributes.price); 
+		for (let i = 0; i < propertyIds.length; i++) {
+			const property = await this.strapiService.getContent({
+				id: propertyIds[i].id.toString(),
+				content: ECMSContent.PROPERTY
+			});
+			const priceInUsd = Util.convertGelToUsd(property.attributes.price);
 
-			properties.push(this.formatProperty(property, priceInUsd))
-		}	
+			properties.push(this.formatProperty(property, priceInUsd));
+		}
 
-		for(let i = 0; i < blogIds.length; i++ ){
-			const blog = await this.strapiService.getContent({  id: blogIds[i].id.toString() , content: ECMSContent.BLOG});
+		for (let i = 0; i < blogIds.length; i++) {
+			const blog = await this.strapiService.getContent({
+				id: blogIds[i].id.toString(),
+				content: ECMSContent.BLOG
+			});
 			blogs.push(this.formatBlog(blog));
 		}
 
-		return { properties, blogs }
+		return { properties, blogs };
 	}
 
-	private formatProperty(property: IProperty, priceInUsd: number){
+	private formatProperty(property: IProperty, priceInUsd: number) {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
@@ -111,7 +113,7 @@ export class AgentService {
 				const title = el?.attributes?.title;
 				const svg = el?.attributes?.title;
 
-				return { title, svg }
+				return { title, svg };
 			}),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
 			city: property.attributes?.city?.data?.attributes?.name,
@@ -124,11 +126,11 @@ export class AgentService {
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
-			updatedAt: property.attributes?.updatedAt,
+			updatedAt: property.attributes?.updatedAt
 		};
 	}
 
-	private formatBlog(blog: IBlog){
+	private formatBlog(blog: IBlog) {
 		return {
 			id: blog.id,
 			title: blog.attributes?.title,
@@ -152,20 +154,19 @@ export class AgentService {
 				thumbnail: blog.attributes?.cover?.data?.attributes?.formats?.thumbnail?.url,
 				url: blog.attributes?.cover?.data?.attributes?.url
 			},
-			gallery: blog.attributes?.gallery?.data?.map( el => {
-				const formated= {
+			gallery: blog.attributes?.gallery?.data?.map((el) => {
+				const formated = {
 					large: el.attributes?.formats?.large?.url,
 					medium: el.attributes?.formats?.medium?.url,
 					small: el.attributes?.formats?.small?.url,
 					thumbnail: el.attributes?.formats?.thumbnail?.url,
 					url: el.attributes?.url
-				}
+				};
 				return formated;
 			}),
 			createdAt: blog.attributes?.createdAt,
 			publishedAt: blog.attributes?.publishedAt,
-			updatedAt: blog.attributes?.updatedAt,
-		}
+			updatedAt: blog.attributes?.updatedAt
+		};
 	}
 }
-

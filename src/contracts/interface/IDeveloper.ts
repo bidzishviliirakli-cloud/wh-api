@@ -9,11 +9,11 @@ export interface IDeveloper {
 		description: string;
 		url: string;
 		cover: {
-			data: IStrapiImage
-		}
+			data: IStrapiImage;
+		};
 		projects: {
-			data: IProject[]
-		}
+			data: IProject[];
+		};
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;

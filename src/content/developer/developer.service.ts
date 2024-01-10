@@ -15,8 +15,8 @@ export class DeveloperService {
 		return this.formatDeveloper(developer);
 	}
 
-	async getMany(): Promise<Array<any>> {
-		const developers = await this.strapiService.getContent({ content: this.content });
+	async getMany(locale: string): Promise<Array<any>> {
+		const developers = await this.strapiService.getContent({ content: this.content, locale });
 
 		return developers.map((el) => this.formatDeveloper(el));
 	}
@@ -29,10 +29,10 @@ export class DeveloperService {
 			cover: developer?.attributes?.cover?.data?.attributes?.url,
 			url: developer?.attributes?.url,
 			description: developer?.attributes?.description,
-			projects: developer.attributes.projects.data.map( el => this.projectService.formatProject(el)),
+			projects: developer.attributes.projects.data.map((el) => this.projectService.formatProject(el)),
 			createdAt: developer?.attributes?.createdAt,
 			publishedAt: developer?.attributes?.publishedAt,
-			updatedAt: developer?.attributes?.updatedAt,
+			updatedAt: developer?.attributes?.updatedAt
 		};
 	}
 }

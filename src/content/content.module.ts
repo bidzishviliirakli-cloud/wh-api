@@ -8,7 +8,7 @@ import { PropertyModule } from "./property";
 import { DeveloperModule } from "./developer";
 import { FaqModule } from "./faq";
 import { AboutModule } from "./about";
-import { ProjectModule } from "./project"
+import { ProjectModule } from "./project";
 
 @Module({
 	imports: [

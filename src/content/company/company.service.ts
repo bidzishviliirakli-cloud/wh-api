@@ -6,7 +6,7 @@ import { StrapiService } from "@strapi";
 export class CompanyService {
 	content = ECMSContent.COMPANY;
 	//default id for warm house
-	id = '1';
+	id = "1";
 
 	constructor(private strapiService: StrapiService) {}
 
@@ -16,8 +16,8 @@ export class CompanyService {
 		return this.formatCompany(company);
 	}
 
-	async getOffices(): Promise<Array<any>> {
-		const companies = await this.strapiService.getContent({ content: ECMSContent.COMPANY_OFFICE });
+	async getOffices(locale: string): Promise<Array<any>> {
+		const companies = await this.strapiService.getContent({ content: ECMSContent.COMPANY_OFFICE, locale });
 
 		return companies.map((el) => this.formatOffice(el));
 	}
@@ -29,21 +29,18 @@ export class CompanyService {
 			about: office?.attributes?.about,
 			address: office?.attributes?.address,
 			phoneNumber: office?.attributes?.phoneNumber,
-			gallery: office?.attributes?.gallery?.data?.map( ph => {
+			gallery: office?.attributes?.gallery?.data?.map((ph) => {
 				return {
 					small: ph.attributes.formats.small.url,
 					medium: ph.attributes.formats.medium.url,
-					thumbnail: ph.attributes.formats.thumbnail.url,
-
-				}
+					thumbnail: ph.attributes.formats.thumbnail.url
+				};
 			}),
 			createdAt: office?.attributes?.createdAt,
 			publishedAt: office?.attributes?.publishedAt,
-			updatedAt: office?.attributes?.updatedAt,
+			updatedAt: office?.attributes?.updatedAt
 		};
 	}
-
-	
 
 	private formatCompany(company: ICompany): any {
 		return {
@@ -56,7 +53,7 @@ export class CompanyService {
 			title: company.attributes?.title,
 			createdAt: company.attributes?.createdAt,
 			publishedAt: company.attributes?.publishedAt,
-			updatedAt: company.attributes?.updatedAt,
+			updatedAt: company.attributes?.updatedAt
 		};
 	}
 }

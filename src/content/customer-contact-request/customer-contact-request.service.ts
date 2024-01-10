@@ -14,8 +14,8 @@ export class CustomerContactRequestService {
 		return this.formatCCR(ccr);
 	}
 
-	async getMany(): Promise<Array<ICustomerContactRequest>> {
-		const ccrs = await this.strapiService.getContent({ content: this.content });
+	async getMany(locale: string): Promise<Array<ICustomerContactRequest>> {
+		const ccrs = await this.strapiService.getContent({ content: this.content, locale });
 
 		return ccrs.map((el) => this.formatCCR(el));
 	}
@@ -38,7 +38,7 @@ export class CustomerContactRequestService {
 			},
 			createdAt: ccr.attributes?.createdAt,
 			publishedAt: ccr.attributes?.publishedAt,
-			updatedAt: ccr.attributes?.updatedAt,
+			updatedAt: ccr.attributes?.updatedAt
 		};
 	}
 }

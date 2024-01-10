@@ -8,7 +8,7 @@ import { PropertyModule } from "../property";
 import { BlogModule } from "../blog";
 
 @Module({
-	imports: [StrapiModule, PropertyModule, BlogModule ],
+	imports: [StrapiModule, PropertyModule, BlogModule],
 	controllers: [AgentController],
 	providers: [AgentService]
 })

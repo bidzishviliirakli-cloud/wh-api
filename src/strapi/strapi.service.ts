@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { firstValueFrom } from "rxjs";
 
 import { EHttpCode, STRAPI_URL, IGetContentParams, ICreateContentParams } from "@contracts";
+import { Util } from "@util";
 
 @Injectable()
 export class StrapiService {
@@ -44,11 +45,13 @@ export class StrapiService {
 		return strapiResponse.data.data;
 	}
 
-	private generateUrl( filter = "", content: string,  locale = "en", id?: string,): string {
+	private generateUrl(filter = "", content: string, locale: string, id?: string): string {
 		let baseUrl = `${STRAPI_URL}/${content}`;
 
+		if (Util.isNull(locale)) locale = "en";
+
 		if (id) {
-			return `${baseUrl}/${id}?populate=*&locale=${locale}`;
+			return `${baseUrl}/${id}?populate=*`;
 		}
 
 		return `${baseUrl}?populate=*&locale=${locale}&${filter}`;

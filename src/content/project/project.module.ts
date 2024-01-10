@@ -4,8 +4,6 @@ import { StrapiModule } from "@strapi";
 import { ProjectController } from "./project.controller";
 import { ProjectService } from "./project.service";
 
-
-
 @Module({
 	imports: [StrapiModule],
 	controllers: [ProjectController],

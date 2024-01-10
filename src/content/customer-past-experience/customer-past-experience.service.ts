@@ -14,8 +14,8 @@ export class CustomerPastExperienceService {
 		return this.formatCPE(cpe);
 	}
 
-	async getMany(): Promise<Array<ICustomerPastExperience>> {
-		const cpes = await this.strapiService.getContent({ content: this.content });
+	async getMany(locale: string): Promise<Array<ICustomerPastExperience>> {
+		const cpes = await this.strapiService.getContent({ content: this.content, locale });
 
 		return cpes.map((el) => this.formatCPE(el));
 	}
@@ -35,7 +35,7 @@ export class CustomerPastExperienceService {
 			},
 			createdAt: cpe.attributes?.createdAt,
 			publishedAt: cpe.attributes?.publishedAt,
-			updatedAt: cpe.attributes?.updatedAt,
+			updatedAt: cpe.attributes?.updatedAt
 		};
 	}
 }

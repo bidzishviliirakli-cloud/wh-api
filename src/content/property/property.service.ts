@@ -5,18 +5,15 @@ import { Util } from "@util";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
 import { ICity } from "src/contracts/interface/ICity";
 
-
 @Injectable()
 export class PropertyService {
 	content = ECMSContent.PROPERTY;
 
-
 	constructor(private strapiService: StrapiService) {}
 
-	async getOne(id: string, locale: string): Promise<IProperty> {
-		const property = await this.strapiService.getContent({ id, locale, content: this.content  });
-		const priceInUsd =  Util.convertGelToUsd(property.attributes.price);
-
+	async getOne(id: string): Promise<IProperty> {
+		const property = await this.strapiService.getContent({ id, content: this.content });
+		const priceInUsd = Util.convertGelToUsd(property.attributes.price);
 
 		return this.formatProperty(property, priceInUsd);
 	}
@@ -25,31 +22,27 @@ export class PropertyService {
 		let strapiFilter = "";
 
 		const propertyCategoryFilterList = filter?.category?.split(",");
-		propertyCategoryFilterList?.forEach(category =>{
-			if(!Util.isNull(category)){
-				strapiFilter += `filters[propertyCategory][title][$eqi]=${category}&`
+		propertyCategoryFilterList?.forEach((category) => {
+			if (!Util.isNull(category)) {
+				strapiFilter += `filters[propertyCategory][title][$eqi]=${category}&`;
 			}
-		} )
-		
+		});
 
 		const cityFilterList = filter?.city?.split(",");
-		cityFilterList?.forEach(city =>{
-				if(!Util.isNull(city)){
-					strapiFilter += `filters[city][name][$eqi]=${city}&`
-				}
-		} )
-		
+		cityFilterList?.forEach((city) => {
+			if (!Util.isNull(city)) {
+				strapiFilter += `filters[city][name][$eqi]=${city}&`;
+			}
+		});
 
 		const dealTypeFilterList = filter?.dealType?.split(",");
-		dealTypeFilterList?.forEach(dealType =>{
-				if(!Util.isNull(dealType)){
-					strapiFilter += `filters[dealType][title][$eqi]=${dealType}&`
-				}
-			} )
-		
+		dealTypeFilterList?.forEach((dealType) => {
+			if (!Util.isNull(dealType)) {
+				strapiFilter += `filters[dealType][title][$eqi]=${dealType}&`;
+			}
+		});
 
-		if(!Util.isNull(filter.text)){
-
+		if (!Util.isNull(filter.text)) {
 			strapiFilter += `filters[title][$containsi]=${filter.text}&`;
 
 			//TODO: search text in description and streetAdress
@@ -57,78 +50,50 @@ export class PropertyService {
 			//strapiFilter += `filters[$or][2][aboutProperty][$containsi]=${filter.text}&`;
 		}
 
+		const data: IProperty[] = await this.strapiService.getContent({
+			content: this.content,
+			filter: strapiFilter,
+			locale: filter.locale
+		});
 
-		
-		const data: IProperty[] = await this.strapiService.getContent({ content: this.content, filter: strapiFilter, locale: filter.locale });
+		return Promise.all(
+			data.map(async (el) => {
+				const priceInUsd = Util.convertGelToUsd(el.attributes.price);
+				const formatedProperty = await this.formatProperty(el, priceInUsd);
 
-
-		return Promise.all(data.map( async el => {
-			const priceInUsd =  Util.convertGelToUsd(el.attributes.price); 
-			const formatedProperty = await this.formatProperty(el, priceInUsd);
-
-			return formatedProperty;
-		}))
+				return formatedProperty;
+			})
+		);
 	}
 
-	async getLocations(){
-		const data: ICity[] = await this.strapiService.getContent({ content: ECMSContent.CITY });
+	async getLocations(locale: string) {
+		const data: ICity[] = await this.strapiService.getContent({ content: ECMSContent.CITY, locale });
 
 		return data.map((el) => this.formatCity(el));
- 
 	}
-	
 
 	//TODO: add interfaces
 
-	async getPropertyCategories(){
-		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY });
+	async getPropertyCategories(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY, locale });
 
 		return data.map((el) => this.formatCategory(el));
 	}
 
 	//TODO: add interfaces
 
-	async getDealTypes(){
-		const data = await this.strapiService.getContent({ content: ECMSContent.DEAL_TYPE });
+	async getDealTypes(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.DEAL_TYPE, locale });
 
-		return data.map(el => this.formatDealType(el));
+		return data.map((el) => this.formatDealType(el));
 	}
-
-	private queryFilter(filter: IPropertyQueryFilter, data: Array<IProperty>): Array<IProperty> {
-		const { city, district, dealType, category, text } = filter;
-		let filteredData = data;
-
-		const isNull = (value) => value === "" ||  value === "null" || value === "undefined" || value === null || value === undefined  || value.length === 0
-
-		if (!isNull(city)) {
-			filteredData = data.filter((el) => el?.attributes?.city?.data?.attributes?.name === city);
-		}
-
-		if (!isNull(district)) {
-			filteredData = data.filter((el) => el?.attributes?.district?.data?.attributes?.name === district);
-		}
-
-		if (!isNull(dealType)) {
-			filteredData = filteredData.filter((el) => el?.attributes?.dealType?.data?.attributes?.title === dealType);
-		}
-
-		if (!isNull(category)) {
-			filteredData = filteredData.filter(
-				(el) => el?.attributes?.propertyCategory?.data?.attributes?.title === category
-			);
-		}
-
-		if (!isNull(text)) {
-			filteredData = filteredData.filter((el) => el?.attributes?.title === text);
-		}
-
-		return filteredData;
-	}
-
 	//TODO fix interfaces
 
 	public async formatProperty(property: IProperty, priceInUsd?: number): Promise<any> {
-		const agent = await this.strapiService.getContent({  id: property.attributes?.agent?.data?.id.toString() , content: ECMSContent.AGENT});
+		const agent = await this.strapiService.getContent({
+			id: property.attributes?.agent?.data?.id.toString(),
+			content: ECMSContent.AGENT
+		});
 
 		return {
 			id: property.id,
@@ -160,7 +125,7 @@ export class PropertyService {
 				const title = el?.attributes?.title;
 				const svg = el?.attributes?.title;
 
-				return { title, svg }
+				return { title, svg };
 			}),
 			category: property.attributes?.propertyCategory?.data?.attributes?.title,
 			city: property.attributes?.city?.data?.attributes?.name,
@@ -173,36 +138,36 @@ export class PropertyService {
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
-			updatedAt: property.attributes?.updatedAt,
+			updatedAt: property.attributes?.updatedAt
 		};
 	}
 
-	private formatCity(city: ICity): any{
+	private formatCity(city: ICity): any {
 		return {
 			id: city?.id,
 			title: city?.attributes?.name,
-			districts: city?.attributes?.districts?.data?.map( el => el?.attributes?.name ),
+			districts: city?.attributes?.districts?.data?.map((el) => el?.attributes?.name),
 			createdAt: city?.attributes?.createdAt,
 			publishedAt: city?.attributes?.publishedAt,
-			updatedAt: city?.attributes?.updatedAt,
-		}
+			updatedAt: city?.attributes?.updatedAt
+		};
 	}
 
 	private formatCategory(category: any): any {
 		return {
 			id: category.id,
 			title: category.attributes.title
-		}
+		};
 	}
 
 	private formatDealType(dealType: any): any {
 		return {
 			id: dealType.id,
 			title: dealType.attributes.title
-		}
+		};
 	}
 
-	private formatAgentForProperty(agent: IAgent){
+	private formatAgentForProperty(agent: IAgent) {
 		return {
 			id: agent.id,
 			about: agent.attributes?.about,
@@ -216,7 +181,7 @@ export class PropertyService {
 				small: agent.attributes?.profilePicture?.data?.attributes?.formats?.small?.url,
 				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
 				url: agent.attributes?.profilePicture?.data?.attributes?.url
-			},
+			}
 		};
 	}
 }

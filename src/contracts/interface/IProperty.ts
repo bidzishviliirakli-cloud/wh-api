@@ -23,8 +23,8 @@ export interface IProperty {
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
-		agent:{
-			data: IAgent
+		agent: {
+			data: IAgent;
 		};
 		propertyAmenities: {
 			data: Array<IPropertyAmenity>;
@@ -44,10 +44,9 @@ export interface IProperty {
 		};
 		district: {
 			data: IDistrict;
-		}
+		};
 		developer: {
 			data: IDeveloper;
 		};
-
 	};
 }

@@ -1,6 +1,6 @@
 import { ECMSContent, ICustomerContactRequest } from "@contracts";
 import { ICustomerContactRequestPayloadDTO } from "@dto";
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CustomerContactRequestService } from "./customer-contact-request.service";
 
@@ -15,8 +15,8 @@ export class CustomerContactRequestController {
 	}
 
 	@Get()
-	getMany(): Promise<Array<ICustomerContactRequest>> {
-		return this.customerContactRequestService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<ICustomerContactRequest>> {
+		return this.customerContactRequestService.getMany(locale);
 	}
 
 	@Post("call-me")

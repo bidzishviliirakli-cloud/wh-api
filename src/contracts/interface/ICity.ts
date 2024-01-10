@@ -1,15 +1,14 @@
 import { IDistrict } from "./IDistrict";
 
 export interface ICity {
-	id: number,
-	  attributes: {
+	id: number;
+	attributes: {
 		districts: {
 			data: IDistrict[];
 		};
-		name: string,
+		name: string;
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
-	  }
+	};
 }
-

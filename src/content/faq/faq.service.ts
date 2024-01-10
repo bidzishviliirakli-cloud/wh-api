@@ -15,8 +15,8 @@ export class FaqService {
 		return this.formatFaq(faq);
 	}
 
-	async getMany(): Promise<Array<IFaq>> {
-		const faqs = await this.strapiService.getContent({ content: this.content });
+	async getMany(locale: string): Promise<Array<IFaq>> {
+		const faqs = await this.strapiService.getContent({ content: this.content, locale });
 
 		return faqs.map((el) => this.formatFaq(el));
 	}
@@ -28,7 +28,7 @@ export class FaqService {
 			question: faq.attributes?.question,
 			createdAt: faq.attributes?.createdAt,
 			publishedAt: faq.attributes?.publishedAt,
-			updatedAt: faq.attributes?.updatedAt,
+			updatedAt: faq.attributes?.updatedAt
 		};
 	}
 }

@@ -1,5 +1,5 @@
 import { ECMSContent, ICompany } from "@contracts";
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CompanyService } from "./company.service";
 
@@ -8,15 +8,13 @@ import { CompanyService } from "./company.service";
 export class CompanyController {
 	constructor(private companyService: CompanyService) {}
 
-
 	@Get()
 	getCompany(): Promise<ICompany> {
 		return this.companyService.getCompany();
 	}
 
 	@Get("offices")
-	getOffices(): Promise<Array<any>> {
-		return this.companyService.getOffices();
+	getOffices(@Query("locale") locale: string): Promise<Array<any>> {
+		return this.companyService.getOffices(locale);
 	}
-	
 }

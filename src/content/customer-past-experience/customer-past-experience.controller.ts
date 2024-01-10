@@ -1,5 +1,5 @@
 import { ECMSContent, ICustomerPastExperience } from "@contracts";
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CustomerPastExperienceService } from "./customer-past-experience.service";
 
@@ -14,7 +14,7 @@ export class CustomerPastExperienceController {
 	}
 
 	@Get()
-	getMany(): Promise<Array<ICustomerPastExperience>> {
-		return this.customerPastExperienceService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<ICustomerPastExperience>> {
+		return this.customerPastExperienceService.getMany(locale);
 	}
 }

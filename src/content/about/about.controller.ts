@@ -1,5 +1,5 @@
 import { ECMSContent } from "@contracts";
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { AboutService } from "./about.service";
 
@@ -9,7 +9,7 @@ export class AboutController {
 	constructor(private aboutService: AboutService) {}
 
 	@Get()
-	getOne(): Promise<any> {
-		return this.aboutService.getOne();
+	getOne(@Query("locale") locale: string): Promise<any> {
+		return this.aboutService.getOne(locale);
 	}
 }

@@ -11,34 +11,30 @@ export class PropertyController {
 	constructor(private propertyService: PropertyService) {}
 
 	@Get("locations")
-	getLocations(): Promise<Array<ICity>> {
-		return this.propertyService.getLocations();
+	getLocations(@Query("locale") locale: string): Promise<Array<ICity>> {
+		return this.propertyService.getLocations(locale);
 	}
 	//TODO: add interfaces
 
-
 	@Get("categories")
-	getPropertyCategories(){
-		return this.propertyService.getPropertyCategories();
+	getPropertyCategories(@Query("locale") locale: string) {
+		return this.propertyService.getPropertyCategories(locale);
 	}
 
 	//TODO: add interfaces
 
 	@Get("dealTypes")
-	getDealType(){
-		return this.propertyService.getDealTypes();
+	getDealType(@Query("locale") locale: string) {
+		return this.propertyService.getDealTypes(locale);
 	}
 
-	
 	@Get(":id")
-	getById(@Param("id") id: string, @Query("locale") locale: string): Promise<IProperty> {
-		return this.propertyService.getOne(id, locale);
+	getById(@Param("id") id: string): Promise<IProperty> {
+		return this.propertyService.getOne(id);
 	}
 
 	@Get()
 	getMany(@Query() filter): Promise<Array<IProperty>> {
 		return this.propertyService.getMany(filter);
 	}
-
-
 }

@@ -1,13 +1,12 @@
-import { Inject, Injectable, forwardRef } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { ECMSContent, IAgent, IBlog } from "@contracts";
-import { AgentService } from "../agent/agent.service";
 
 @Injectable()
 export class BlogService {
 	content = ECMSContent.BLOG;
 
-	constructor( private strapiService: StrapiService, ) {}
+	constructor(private strapiService: StrapiService) {}
 
 	async getOne(id: string): Promise<IBlog> {
 		const blog = await this.strapiService.getContent({ id, content: this.content });
@@ -15,16 +14,18 @@ export class BlogService {
 		return this.formatBlog(blog);
 	}
 
-	async getMany(): Promise<Array<IBlog>> {
-		const blogs = await this.strapiService.getContent({ content: this.content });
-		const formatedBlogs = blogs.map(async (el) => await this.formatBlog(el))
+	async getMany(locale: string): Promise<Array<IBlog>> {
+		const blogs = await this.strapiService.getContent({ content: this.content, locale });
+		const formatedBlogs = blogs.map(async (el) => await this.formatBlog(el));
 
 		return Promise.all(formatedBlogs);
 	}
 
 	public async formatBlog(blog: IBlog): Promise<any> {
-		const agent = await this.strapiService.getContent({  id: blog.attributes?.agent?.data?.id.toString() , content: ECMSContent.AGENT});
-
+		const agent = await this.strapiService.getContent({
+			id: blog.attributes?.agent?.data?.id.toString(),
+			content: ECMSContent.AGENT
+		});
 
 		return {
 			id: blog.id,
@@ -49,24 +50,24 @@ export class BlogService {
 				thumbnail: blog.attributes?.cover?.data?.attributes?.formats?.thumbnail?.url,
 				url: blog.attributes?.cover?.data?.attributes?.url
 			},
-			gallery: blog.attributes?.gallery?.data?.map( el => {
-				const formated= {
+			gallery: blog.attributes?.gallery?.data?.map((el) => {
+				const formated = {
 					large: el.attributes?.formats?.large?.url,
 					medium: el.attributes?.formats?.medium?.url,
 					small: el.attributes?.formats?.small?.url,
 					thumbnail: el.attributes?.formats?.thumbnail?.url,
 					url: el.attributes?.url
-				}
+				};
 				return formated;
 			}),
 			agent: this.formatAgentForBlog(agent),
 			createdAt: blog.attributes?.createdAt,
 			publishedAt: blog.attributes?.publishedAt,
-			updatedAt: blog.attributes?.updatedAt,
-		}
+			updatedAt: blog.attributes?.updatedAt
+		};
 	}
 
-	private formatAgentForBlog(agent: IAgent){
+	private formatAgentForBlog(agent: IAgent) {
 		return {
 			id: agent.id,
 			about: agent.attributes?.about,
@@ -80,7 +81,7 @@ export class BlogService {
 				small: agent.attributes?.profilePicture?.data?.attributes?.formats?.small?.url,
 				thumbnail: agent.attributes?.profilePicture?.data?.attributes?.formats?.thumbnail?.url,
 				url: agent.attributes?.profilePicture?.data?.attributes?.url
-			},
+			}
 		};
 	}
 }

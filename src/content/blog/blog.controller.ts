@@ -1,5 +1,5 @@
 import { ECMSContent, IBlog } from "@contracts";
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
 import { BlogService } from "./blog.service";
@@ -15,7 +15,7 @@ export class BlogController {
 	}
 
 	@Get()
-	getMany(): Promise<Array<IBlog>> {
-		return this.blogService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<IBlog>> {
+		return this.blogService.getMany(locale);
 	}
 }

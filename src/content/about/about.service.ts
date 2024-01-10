@@ -8,8 +8,8 @@ export class AboutService {
 
 	constructor(private strapiService: StrapiService) {}
 
-	async getOne(): Promise<ICompany> {
-		const about = await this.strapiService.getContent({ content: this.content });
+	async getOne(locale: string): Promise<ICompany> {
+		const about = await this.strapiService.getContent({ content: this.content, locale });
 
 		return this.formatAbout(about);
 	}
@@ -43,31 +43,29 @@ export class AboutService {
 			accesibilityDescription: about.attributes?.accesibilityDescription,
 			officesHeader: about.attributes?.officesHeader,
 			officesDescription: about.attributes?.officesDescription,
-			companyOffices: about.attributes?.company_offices?.data?.map( office => {
-				const data ={
+			companyOffices: about.attributes?.company_offices?.data?.map((office) => {
+				const data = {
 					title: office?.attributes?.title,
 					about: office?.attributes?.about,
 					address: office?.attributes?.address,
-					phone: office?.attributes?.phoneNumber,
-				}
+					phone: office?.attributes?.phoneNumber
+				};
 
 				return data;
 			}),
-			gallery: about.attributes?.gallery?.data?.map( photo => {
-				const data ={
+			gallery: about.attributes?.gallery?.data?.map((photo) => {
+				const data = {
 					large: photo.attributes?.formats?.large?.url,
 					medium: photo.attributes?.formats?.medium?.url,
 					small: photo.attributes?.formats?.small?.url,
 					thumbnail: photo.attributes?.formats?.thumbnail?.url
-
-				}
+				};
 
 				return data;
 			}),
 			createdAt: about.attributes?.createdAt,
 			publishedAt: about.attributes?.publishedAt,
-			updatedAt: about.attributes?.updatedAt,
+			updatedAt: about.attributes?.updatedAt
 		};
 	}
 }
-

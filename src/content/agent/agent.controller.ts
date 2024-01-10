@@ -1,5 +1,5 @@
 import { ECMSContent, IAgent } from "@contracts";
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
 import { AgentService } from "./agent.service";
@@ -15,7 +15,7 @@ export class AgentController {
 	}
 
 	@Get()
-	getMany(): Promise<Array<IAgent>> {
-		return this.agentService.getMany();
+	getMany(@Query("locale") locale: string): Promise<Array<IAgent>> {
+		return this.agentService.getMany(locale);
 	}
 }
