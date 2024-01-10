@@ -11,7 +11,7 @@ export class Util {
     }
 
     public static isNull(value: string): boolean{
-        return value === "undefined" || value === "null" || value?.length === 0
+        return value === "undefined" || value === "null" || value?.length === 0 || value === null || value === undefined
     }
 
     private static getConversionRate(){

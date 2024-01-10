@@ -31,8 +31,8 @@ export class PropertyController {
 
 	
 	@Get(":id")
-	getById(@Param("id") id: string): Promise<IProperty> {
-		return this.propertyService.getOne(id);
+	getById(@Param("id") id: string, @Query("locale") locale: string): Promise<IProperty> {
+		return this.propertyService.getOne(id, locale);
 	}
 
 	@Get()

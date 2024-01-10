@@ -9,8 +9,8 @@ export class StrapiService {
 	constructor(private httpService: HttpService) {}
 
 	async getContent(params: IGetContentParams) {
-		const { id, content, filter } = params;
-		const url = this.generateUrl(filter, content, id);
+		const { id, content, filter, locale } = params;
+		const url = this.generateUrl(filter, content, locale, id);
 
 		let strapiResponse;
 
@@ -44,13 +44,13 @@ export class StrapiService {
 		return strapiResponse.data.data;
 	}
 
-	private generateUrl( filter = "", content: string, id?: string): string {
+	private generateUrl( filter = "", content: string,  locale = "en", id?: string,): string {
 		let baseUrl = `${STRAPI_URL}/${content}`;
 
 		if (id) {
-			return `${baseUrl}/${id}?populate=*`;
+			return `${baseUrl}/${id}?populate=*&locale=${locale}`;
 		}
 
-		return `${baseUrl}?populate=*&${filter}`;
+		return `${baseUrl}?populate=*&locale=${locale}&${filter}`;
 	}
 }

@@ -13,8 +13,8 @@ export class PropertyService {
 
 	constructor(private strapiService: StrapiService) {}
 
-	async getOne(id: string): Promise<IProperty> {
-		const property = await this.strapiService.getContent({ id, content: this.content });
+	async getOne(id: string, locale: string): Promise<IProperty> {
+		const property = await this.strapiService.getContent({ id, locale, content: this.content  });
 		const priceInUsd =  Util.convertGelToUsd(property.attributes.price);
 
 
@@ -25,7 +25,7 @@ export class PropertyService {
 		let strapiFilter = "";
 
 		const propertyCategoryFilterList = filter?.category?.split(",");
-		propertyCategoryFilterList.forEach(category =>{
+		propertyCategoryFilterList?.forEach(category =>{
 			if(!Util.isNull(category)){
 				strapiFilter += `filters[propertyCategory][title][$eqi]=${category}&`
 			}
@@ -33,7 +33,7 @@ export class PropertyService {
 		
 
 		const cityFilterList = filter?.city?.split(",");
-		cityFilterList.forEach(city =>{
+		cityFilterList?.forEach(city =>{
 				if(!Util.isNull(city)){
 					strapiFilter += `filters[city][name][$eqi]=${city}&`
 				}
@@ -41,7 +41,7 @@ export class PropertyService {
 		
 
 		const dealTypeFilterList = filter?.dealType?.split(",");
-		dealTypeFilterList.forEach(dealType =>{
+		dealTypeFilterList?.forEach(dealType =>{
 				if(!Util.isNull(dealType)){
 					strapiFilter += `filters[dealType][title][$eqi]=${dealType}&`
 				}
@@ -59,7 +59,7 @@ export class PropertyService {
 
 
 		
-		const data: IProperty[] = await this.strapiService.getContent({ content: this.content, filter: strapiFilter });
+		const data: IProperty[] = await this.strapiService.getContent({ content: this.content, filter: strapiFilter, locale: filter.locale });
 
 
 		return Promise.all(data.map( async el => {

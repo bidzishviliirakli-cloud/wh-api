@@ -1,5 +1,6 @@
 export interface IGetContentParams {
-	id?: string;
 	content: string;
+	locale?: string
+	id?: string;
 	filter? : string;
 }
