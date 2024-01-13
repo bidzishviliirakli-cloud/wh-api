@@ -1,4 +1,4 @@
-import { ECMSContent, IDeveloper } from "@contracts";
+import { ECMSContent, IDeveloper, IProject } from "@contracts";
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { ProjectService } from "../project";
@@ -12,16 +12,18 @@ export class DeveloperService {
 	async getOne(id: string): Promise<any> {
 		const developer = await this.strapiService.getContent({ id, content: this.content });
 
-		return this.formatDeveloper(developer);
+		return this.formatDeveloper(developer, true);
 	}
 
 	async getMany(locale: string): Promise<Array<any>> {
 		const developers = await this.strapiService.getContent({ content: this.content, locale });
 
-		return developers.map((el) => this.formatDeveloper(el));
+		return Promise.all(developers.map( async (el) => await this.formatDeveloper(el)));
 	}
 
-	private formatDeveloper(developer: IDeveloper): any {
+	private async formatDeveloper(developer: IDeveloper, detailed = false): Promise<any> {
+		const projects = await this.getProjectsInfo(developer, detailed);
+
 		return {
 			id: developer?.id,
 			ceo: developer?.attributes?.ceo,
@@ -29,10 +31,31 @@ export class DeveloperService {
 			cover: developer?.attributes?.cover?.data?.attributes?.url,
 			url: developer?.attributes?.url,
 			description: developer?.attributes?.description,
-			projects: developer.attributes.projects.data.map((el) => this.projectService.formatProject(el)),
+			projects,
 			createdAt: developer?.attributes?.createdAt,
 			publishedAt: developer?.attributes?.publishedAt,
 			updatedAt: developer?.attributes?.updatedAt
 		};
+	}
+
+	private async getProjectsInfo(developer: IDeveloper, detailed: boolean): Promise<any> {
+		if (!detailed) {
+			return developer?.attributes?.projects?.data?.map((el) => this.projectService.formatProject(el));
+		}
+
+		const projectIds = developer.attributes?.projects?.data;
+		const projects = [];
+		
+
+		for (let i = 0; i < projectIds.length; i++) {
+			const project = await this.strapiService.getContent({
+				id: projectIds[i]?.id?.toString(),
+				content: ECMSContent.PROJECT
+			});
+
+			projects.push(this.projectService.formatProject(project));
+		}
+
+		return projects ;
 	}
 }
