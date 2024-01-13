@@ -20,9 +20,8 @@ export class CustomerContactRequestService {
 		return ccrs.map((el) => this.formatCCR(el));
 	}
 
-	async callMe(data: ICustomerContactRequestPayloadDTO): Promise<ICustomerContactRequest> {
-		const ccr = await this.strapiService.createContent({ content: this.content, data });
-		return this.formatCCR(ccr);
+	async callMe(data: ICustomerContactRequestPayloadDTO): Promise<void> {
+		await this.strapiService.createContent({ content: this.content, data });
 	}
 
 	private formatCCR(ccr: ICustomerContactRequest): any {
@@ -35,6 +34,12 @@ export class CustomerContactRequestService {
 			phoneNumber: ccr?.attributes?.phoneNumber,
 			property: {
 				id: ccr?.attributes?.property?.data?.id
+			},
+			project: {
+				id: ccr?.attributes?.project?.data?.id
+			},
+			developer: {
+				id: ccr?.attributes?.developer?.data?.id
 			},
 			createdAt: ccr.attributes?.createdAt,
 			publishedAt: ccr.attributes?.publishedAt,

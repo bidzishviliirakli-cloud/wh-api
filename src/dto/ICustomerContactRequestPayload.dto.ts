@@ -27,6 +27,16 @@ export class ICustomerContactRequestPayloadDTO {
 	@IsString()
 	property: string;
 
+	@ApiProperty({ description: "Developer Id", type: String })
+	@IsOptional()
+	@IsString()
+	developer: string;
+
+	@ApiProperty({ description: "Project Id", type: String })
+	@IsOptional()
+	@IsString()
+	project: string;
+
 	@ApiProperty({ description: "Customer contact details, random information", type: String })
 	@IsOptional()
 	@IsString()

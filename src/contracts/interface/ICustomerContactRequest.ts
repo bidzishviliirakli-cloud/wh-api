@@ -1,3 +1,5 @@
+import { IDeveloper } from "./IDeveloper";
+import { IProject } from "./IProject";
 import { IProperty } from "./IProperty";
 
 export interface ICustomerContactRequest {
@@ -9,6 +11,12 @@ export interface ICustomerContactRequest {
 		phoneNumber: string;
 		property: {
 			data: IProperty;
+		};
+		project: {
+			data: IProject;
+		};
+		developer: {
+			data: IDeveloper;
 		};
 		contactDetails: string;
 		createdAt: Date;
