@@ -20,7 +20,7 @@ export class CustomerContactRequestController {
 	}
 
 	@Post("call-me")
-	callMe(@Body() payload: ICustomerContactRequestPayloadDTO): Promise<ICustomerContactRequest> {
+	callMe(@Body() payload: ICustomerContactRequestPayloadDTO): Promise<void> {
 		return this.customerContactRequestService.callMe(payload);
 	}
 }
