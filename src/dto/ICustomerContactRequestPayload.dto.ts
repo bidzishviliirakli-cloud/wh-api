@@ -14,6 +14,7 @@ export class ICustomerContactRequestPayloadDTO {
 
 	@ApiProperty({ description: "Customer email", type: String })
 	@IsOptional()
+	@IsEmail()
 	email: string;
 
 	@ApiProperty({ description: "Customer phone number", type: String })
