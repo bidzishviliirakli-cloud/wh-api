@@ -13,8 +13,7 @@ export class ICustomerContactRequestPayloadDTO {
 	lastName: string;
 
 	@ApiProperty({ description: "Customer email", type: String })
-	@IsDefined()
-	@IsEmail()
+	@IsOptional()
 	email: string;
 
 	@ApiProperty({ description: "Customer phone number", type: String })
