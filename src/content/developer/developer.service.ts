@@ -1,7 +1,8 @@
-import { ECMSContent, IDeveloper, IProject } from "@contracts";
+import { ECMSContent, IDeveloper, IDeveloperQueryFilter, IProject } from "@contracts";
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { ProjectService } from "../project";
+import { Util } from "@util";
 
 @Injectable()
 export class DeveloperService {
@@ -15,8 +16,15 @@ export class DeveloperService {
 		return this.formatDeveloper(developer, true);
 	}
 
-	async getMany(locale: string): Promise<Array<any>> {
-		const developers = await this.strapiService.getContent({ content: this.content, locale });
+	async getMany(filter: IDeveloperQueryFilter): Promise<Array<any>> {
+		const { locale, title } = filter;
+		let strapiFilter = "";
+
+		if (!Util.isNull(title)) {
+			strapiFilter += `filters[title][$containsi]=${title}`;
+		}
+
+		const developers = await this.strapiService.getContent({ content: this.content, locale, filter: strapiFilter });
 
 		return Promise.all(developers.map( async (el) => await this.formatDeveloper(el)));
 	}

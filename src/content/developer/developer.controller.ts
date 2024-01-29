@@ -1,4 +1,4 @@
-import { ECMSContent, IDeveloper } from "@contracts";
+import { ECMSContent, IDeveloper, IDeveloperQueryFilter } from "@contracts";
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { DeveloperService } from "./developer.service";
@@ -14,7 +14,7 @@ export class DeveloperController {
 	}
 
 	@Get()
-	getMany(@Query("locale") locale: string): Promise<Array<IDeveloper>> {
-		return this.developerService.getMany(locale);
+	getMany(@Query() filter: IDeveloperQueryFilter): Promise<Array<IDeveloper>> {
+		return this.developerService.getMany(filter);
 	}
 }
