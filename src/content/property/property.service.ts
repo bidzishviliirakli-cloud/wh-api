@@ -14,8 +14,10 @@ export class PropertyService {
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
 		const priceInUsd = Util.convertGelToUsd(property.attributes.price);
-
-		return this.formatProperty(property, priceInUsd);
+		const geoLocation = await this.strapiService.getGeoLocation(property.attributes.streetAddress);
+		
+		
+		return this.formatProperty(property, priceInUsd, geoLocation);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
@@ -89,7 +91,7 @@ export class PropertyService {
 	}
 	//TODO fix interfaces
 
-	public async formatProperty(property: IProperty, priceInUsd?: number): Promise<any> {
+	public async formatProperty(property: IProperty, priceInUsd?: number, geoLocation?: any): Promise<any> {
 		const agent = await this.strapiService.getContent({
 			id: property.attributes?.agent?.data?.id.toString(),
 			content: ECMSContent.AGENT
@@ -98,6 +100,8 @@ export class PropertyService {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
+			lat: geoLocation?.lat,
+			lng: geoLocation?.lng,
 			bedRoomQuantity: property.attributes?.bedroomQuantity,
 			dealType: property.attributes?.dealType?.data?.attributes?.title,
 			description: property.attributes?.description,

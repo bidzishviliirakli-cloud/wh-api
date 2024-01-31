@@ -45,6 +45,19 @@ export class StrapiService {
 		return strapiResponse.data.data;
 	}
 
+	async getGeoLocation(address: string): Promise<{lat: number, lng: number}>{
+		const res = await firstValueFrom(this.httpService.get("https://maps.googleapis.com/maps/api/geocode/json", {
+			params: {
+				address: address,
+				//@TODO MOVE IT TO .env
+				key: "AIzaSyAqwi7RWqdUZWakzP8PvCkvGkbvbLvbcQ0"
+			}
+		}
+		))
+
+		return res?.data?.results[0]?.geometry?.location;
+	}
+
 	private generateUrl(filter = "", content: string, locale: string, id?: string): string {
 		let baseUrl = `${STRAPI_URL}/${content}`;
 
