@@ -120,7 +120,8 @@ export class PropertyService {
 					medium: formats?.medium?.url,
 					small: formats?.small?.url,
 					thumbnail: formats?.thumbnail?.url,
-					url: el.attributes.url
+					url: el.attributes.url,
+					type: el?.attributes?.provider_metadata?.resource_type
 				};
 			}),
 			agent: this.formatAgentForProperty(agent),

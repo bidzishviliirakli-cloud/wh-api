@@ -59,7 +59,10 @@ export interface IStrapiImage {
 		url: string;
 		previewUrl: string;
 		provider: string;
-		provider_metadata: string;
+		provider_metadata: {
+			public_id: string;
+			resource_type: string;
+		};
 		createdAt: Date;
 		updatedAt: Date;
 	};

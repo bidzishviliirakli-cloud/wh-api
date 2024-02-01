@@ -49,8 +49,7 @@ export class StrapiService {
 		const res = await firstValueFrom(this.httpService.get("https://maps.googleapis.com/maps/api/geocode/json", {
 			params: {
 				address: address,
-				//@TODO MOVE IT TO .env
-				key: "AIzaSyAqwi7RWqdUZWakzP8PvCkvGkbvbLvbcQ0"
+				key: process.env.GEOCODING_API_KEY
 			}
 		}
 		))
