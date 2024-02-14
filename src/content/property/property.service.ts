@@ -37,6 +37,13 @@ export class PropertyService {
 			}
 		});
 
+		const districtFilterList = filter?.district?.split(",");
+		districtFilterList?.forEach((district) => {
+			if (!Util.isNull(district)) {
+				strapiFilter += `filters[district][name][$eqi]=${district}&`;
+			}
+		});
+
 		const dealTypeFilterList = filter?.dealType?.split(",");
 		dealTypeFilterList?.forEach((dealType) => {
 			if (!Util.isNull(dealType)) {
