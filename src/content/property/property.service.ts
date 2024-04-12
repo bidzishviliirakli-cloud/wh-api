@@ -52,11 +52,7 @@ export class PropertyService {
 		});
 
 		if (!Util.isNull(filter.text)) {
-			strapiFilter += `filters[title][$containsi]=${filter.text}&`;
-
-			//TODO: search text in description and streetAdress
-			//strapiFilter += `filters[$or][1][streetAddress][$containsi]=${filter.text}&`;
-			//strapiFilter += `filters[$or][2][aboutProperty][$containsi]=${filter.text}&`;
+			strapiFilter += `filters[id][$eq]=${filter.text}&`;
 		}
 
 		const data: IProperty[] = await this.strapiService.getContent({
