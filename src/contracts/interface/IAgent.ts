@@ -10,6 +10,7 @@ export interface IAgent {
 		about: string;
 		phoneNumber: number;
 		email: string;
+		status: string;
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;

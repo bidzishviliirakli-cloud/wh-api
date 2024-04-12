@@ -35,6 +35,7 @@ export class AgentService {
 			about: agent.attributes?.about,
 			email: agent.attributes?.email,
 			name: agent.attributes?.name,
+			status: agent.attributes?.status,
 			lastName: agent.attributes?.lastName,
 			phoneNumber: agent.attributes?.phoneNumber,
 			profilePicture: {
