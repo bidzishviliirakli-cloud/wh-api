@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { IAgent, ECMSContent, IProperty, IBlog } from "@contracts";
-import { Util } from "@util";
 
 @Injectable()
 export class AgentService {
@@ -54,34 +53,23 @@ export class AgentService {
 	}
 
 	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any> {
-		if (!detailed) {
-			return { properties: agent.attributes.properties, blogs: agent.attributes.blogs };
+		let properties, blogs = [];
+
+		if(!detailed){
+			return { properties, blogs }
 		}
 
-		const propertyIds = agent.attributes?.properties?.data;
-		const properties = [];
-		const blogIds = agent.attributes?.blogs?.data;
-		const blogs = [];
+		properties = await this.strapiService.getContent({
+			filter: `filters[agent][id][$eq]=${agent.id}`,
+			content: ECMSContent.PROPERTY
+		});
 
-		for (let i = 0; i < propertyIds.length; i++) {
-			const property = await this.strapiService.getContent({
-				id: propertyIds[i].id.toString(),
-				content: ECMSContent.PROPERTY
-			});
-			const priceInUsd = Util.convertGelToUsd(property.attributes.price);
+		blogs = await this.strapiService.getContent({
+			filter: `filters[agent][id][$eq]=${agent.id}`,
+			content: ECMSContent.BLOG
+		});
 
-			properties.push(this.formatProperty(property, priceInUsd));
-		}
-
-		for (let i = 0; i < blogIds.length; i++) {
-			const blog = await this.strapiService.getContent({
-				id: blogIds[i].id.toString(),
-				content: ECMSContent.BLOG
-			});
-			blogs.push(this.formatBlog(blog));
-		}
-
-		return { properties, blogs };
+		return { properties: properties.map( property => this.formatProperty( property, property.priceInUsd )), blogs: blogs.map( blog => this.formatBlog(blog)) };
 	}
 
 	private formatProperty(property: IProperty, priceInUsd: number) {
