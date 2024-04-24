@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { StrapiService } from "@strapi";
 import { IAgent, ECMSContent, IProperty, IBlog } from "@contracts";
+import { Util } from "@util";
 
 @Injectable()
 export class AgentService {
@@ -53,7 +54,8 @@ export class AgentService {
 	}
 
 	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any> {
-		let properties, blogs = [];
+		let properties = []; 
+		let blogs = [];
 
 		if(!detailed){
 			return { properties, blogs }
@@ -69,10 +71,10 @@ export class AgentService {
 			content: ECMSContent.BLOG
 		});
 
-		return { properties: properties.map( property => this.formatProperty( property, property.priceInUsd )), blogs: blogs.map( blog => this.formatBlog(blog)) };
+		return { properties: properties.map( property => this.formatProperty( property )), blogs: blogs.map( blog => this.formatBlog(blog)) };
 	}
 
-	private formatProperty(property: IProperty, priceInUsd: number) {
+	private formatProperty(property: IProperty) {
 		return {
 			id: property.id,
 			streetAddress: property.attributes?.streetAddress,
@@ -110,7 +112,7 @@ export class AgentService {
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {
-				usd: priceInUsd?.toLocaleString("en-US"),
+				usd: Util.convertGelToUsd(property.attributes.price)?.toLocaleString("en-US"),
 				gel: property.attributes?.price?.toLocaleString("ge-GE")
 			},
 			createdAt: property.attributes?.createdAt,
