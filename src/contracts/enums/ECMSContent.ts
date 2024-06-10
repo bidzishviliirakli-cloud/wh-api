@@ -13,5 +13,6 @@ export enum ECMSContent {
 	CITY = "cities",
 	ABOUT = "about",
 	COMPANY_OFFICE = "company-offices",
-	PROJECT = "projects"
+	PROJECT = "projects",
+	UPLOAD = "upload"
 }

@@ -45,14 +45,15 @@ export class StrapiService {
 		return strapiResponse.data.data;
 	}
 
-	async getGeoLocation(address: string): Promise<{lat: number, lng: number}>{
-		const res = await firstValueFrom(this.httpService.get("https://maps.googleapis.com/maps/api/geocode/json", {
-			params: {
-				address: address,
-				key: process.env.GEOCODING_API_KEY
-			}
-		}
-		))
+	async getGeoLocation(address: string): Promise<{ lat: number; lng: number }> {
+		const res = await firstValueFrom(
+			this.httpService.get("https://maps.googleapis.com/maps/api/geocode/json", {
+				params: {
+					address: address,
+					key: process.env.GEOCODING_API_KEY
+				}
+			})
+		);
 
 		return res?.data?.results[0]?.geometry?.location;
 	}

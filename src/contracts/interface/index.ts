@@ -12,4 +12,4 @@ export * from "./IDeveloper";
 export * from "./IFaq";
 export * from "./IPropertyQueryFilter";
 export * from "./IProject";
-export * from "./IDeveloperQueryFilter"
+export * from "./IDeveloperQueryFilter";
