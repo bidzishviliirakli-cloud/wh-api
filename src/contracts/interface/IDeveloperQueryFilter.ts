@@ -1,4 +1,4 @@
-export interface IDeveloperQueryFilter{
-    locale: string;
-    title?: string
+export interface IDeveloperQueryFilter {
+	locale: string;
+	title?: string;
 }

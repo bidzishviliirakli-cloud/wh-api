@@ -54,11 +54,11 @@ export class AgentService {
 	}
 
 	private async getDetailedInfo(agent: IAgent, detailed: boolean): Promise<any> {
-		let properties = []; 
+		let properties = [];
 		let blogs = [];
 
-		if(!detailed){
-			return { properties, blogs }
+		if (!detailed) {
+			return { properties, blogs };
 		}
 
 		properties = await this.strapiService.getContent({
@@ -71,7 +71,10 @@ export class AgentService {
 			content: ECMSContent.BLOG
 		});
 
-		return { properties: properties.map( property => this.formatProperty( property )), blogs: blogs.map( blog => this.formatBlog(blog)) };
+		return {
+			properties: properties.map((property) => this.formatProperty(property)),
+			blogs: blogs.map((blog) => this.formatBlog(blog))
+		};
 	}
 
 	private formatProperty(property: IProperty) {

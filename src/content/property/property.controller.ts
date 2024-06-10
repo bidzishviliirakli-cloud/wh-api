@@ -1,9 +1,10 @@
 import { ECMSContent, IProperty } from "@contracts";
-import { Controller, Get, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
 import { PropertyService } from "./property.service";
 import { ICity } from "src/contracts/interface/ICity";
+import { IUploadPropertyDTO } from "@dto";
 
 @ApiTags(ECMSContent.PROPERTY)
 @Controller(`content/${ECMSContent.PROPERTY}`)
@@ -14,14 +15,11 @@ export class PropertyController {
 	getLocations(@Query("locale") locale: string): Promise<Array<ICity>> {
 		return this.propertyService.getLocations(locale);
 	}
-	//TODO: add interfaces
 
 	@Get("categories")
 	getPropertyCategories(@Query("locale") locale: string) {
 		return this.propertyService.getPropertyCategories(locale);
 	}
-
-	//TODO: add interfaces
 
 	@Get("dealTypes")
 	getDealType(@Query("locale") locale: string) {
@@ -36,5 +34,10 @@ export class PropertyController {
 	@Get()
 	getMany(@Query() filter): Promise<Array<IProperty>> {
 		return this.propertyService.getMany(filter);
+	}
+
+	@Post("upload")
+	upload(@Body() body: IUploadPropertyDTO): Promise<any> {
+		return this.propertyService.upload(body);
 	}
 }

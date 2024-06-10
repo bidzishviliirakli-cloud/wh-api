@@ -26,7 +26,7 @@ export class DeveloperService {
 
 		const developers = await this.strapiService.getContent({ content: this.content, locale, filter: strapiFilter });
 
-		return Promise.all(developers.map( async (el) => await this.formatDeveloper(el)));
+		return Promise.all(developers.map(async (el) => await this.formatDeveloper(el)));
 	}
 
 	private async formatDeveloper(developer: IDeveloper, detailed = false): Promise<any> {
@@ -53,7 +53,6 @@ export class DeveloperService {
 
 		const projectIds = developer.attributes?.projects?.data;
 		const projects = [];
-		
 
 		for (let i = 0; i < projectIds.length; i++) {
 			const project = await this.strapiService.getContent({
@@ -64,6 +63,6 @@ export class DeveloperService {
 			projects.push(this.projectService.formatProject(project));
 		}
 
-		return projects ;
+		return projects;
 	}
 }

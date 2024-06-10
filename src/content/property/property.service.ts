@@ -4,6 +4,7 @@ import { ECMSContent, IAgent, IProperty } from "@contracts";
 import { Util } from "@util";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
 import { ICity } from "src/contracts/interface/ICity";
+import { IUploadPropertyDTO } from "@dto";
 
 @Injectable()
 export class PropertyService {
@@ -15,8 +16,7 @@ export class PropertyService {
 		const property = await this.strapiService.getContent({ id, content: this.content });
 		const priceInUsd = Util.convertGelToUsd(property.attributes.price);
 		const geoLocation = await this.strapiService.getGeoLocation(property.attributes.streetAddress);
-		
-		
+
 		return this.formatProperty(property, priceInUsd, geoLocation);
 	}
 
@@ -77,22 +77,22 @@ export class PropertyService {
 		return data.map((el) => this.formatCity(el));
 	}
 
-	//TODO: add interfaces
-
 	async getPropertyCategories(locale: string) {
 		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY, locale });
 
 		return data.map((el) => this.formatCategory(el));
 	}
 
-	//TODO: add interfaces
-
 	async getDealTypes(locale: string) {
 		const data = await this.strapiService.getContent({ content: ECMSContent.DEAL_TYPE, locale });
 
 		return data.map((el) => this.formatDealType(el));
 	}
-	//TODO fix interfaces
+
+	async upload(body: IUploadPropertyDTO) {
+				const property = await this.strapiService.createContent({ data: body, content: ECMSContent.PROPERTY})
+		return "ok";
+	}
 
 	public async formatProperty(property: IProperty, priceInUsd?: number, geoLocation?: any): Promise<any> {
 		const agent = await this.strapiService.getContent({
@@ -115,19 +115,7 @@ export class PropertyService {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
-			gallery: property.attributes?.gallery?.data?.map((el) => {
-				const formats = el.attributes?.formats;
-
-				return {
-					large: formats?.large?.url,
-					medium: formats?.medium?.url,
-					small: formats?.small?.url,
-					thumbnail: formats?.thumbnail?.url,
-					url: el.attributes.url,
-					type: el?.attributes?.provider_metadata?.resource_type,
-					previewUrl: el?.attributes.previewUrl
-				};
-			}),
+			gallery: property.attributes?.gallery,
 			agent: this.formatAgentForProperty(agent),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
