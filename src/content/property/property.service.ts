@@ -115,7 +115,8 @@ export class PropertyService {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
-			gallery: property.attributes?.gallery,
+			//@ts-ignore
+			gallery: JSON.parse(property.attributes?.gallery) ,
 			agent: this.formatAgentForProperty(agent),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
