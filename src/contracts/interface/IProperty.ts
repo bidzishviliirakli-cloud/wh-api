@@ -36,9 +36,7 @@ export interface IProperty {
 			data: IDealType;
 		};
 
-		gallery: {
-			data: Array<IStrapiImage>;
-		};
+		gallery: string[],
 		city: {
 			data: ICity;
 		};

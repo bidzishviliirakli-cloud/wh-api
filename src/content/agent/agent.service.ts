@@ -91,17 +91,8 @@ export class AgentService {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
-			gallery: property.attributes?.gallery?.data?.map((el) => {
-				const formats = el.attributes?.formats;
-
-				return {
-					large: formats?.large?.url,
-					medium: formats?.medium?.url,
-					small: formats?.small?.url,
-					thumbnail: formats?.thumbnail?.url,
-					url: el.attributes.url
-				};
-			}),
+			//@ts-ignore
+			gallery: JSON.parse(property.attributes?.gallery),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
 				const title = el?.attributes?.title;
