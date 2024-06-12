@@ -88,9 +88,15 @@ export class PropertyService {
 
 		return data.map((el) => this.formatDealType(el));
 	}
+	
+	async getAmenities(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_AMENITY, locale });
+		return "ok"
+	}
+
 
 	async upload(body: IUploadPropertyDTO) {
-				const property = await this.strapiService.createContent({ data: body, content: ECMSContent.PROPERTY})
+		const property = await this.strapiService.createContent({ data: body, content: ECMSContent.PROPERTY})
 		return "ok";
 	}
 
@@ -106,7 +112,7 @@ export class PropertyService {
 			lat: geoLocation?.lat,
 			lng: geoLocation?.lng,
 			bedRoomQuantity: property.attributes?.bedroomQuantity,
-			dealType: property.attributes?.dealType?.data?.attributes?.title,
+			dealType: property.attributes?.dealType,
 			description: property.attributes?.description,
 			aboutProperty: property.attributes?.aboutProperty,
 			parking: property.attributes?.parking,
@@ -116,7 +122,7 @@ export class PropertyService {
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
 			//@ts-ignore
-			gallery: JSON.parse(property.attributes?.gallery) ,
+			gallery: JSON.parse(property.attributes?.gallery),
 			agent: this.formatAgentForProperty(agent),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
@@ -125,9 +131,9 @@ export class PropertyService {
 
 				return { title, svg };
 			}),
-			category: property.attributes?.propertyCategory?.data?.attributes?.title,
-			city: property.attributes?.city?.data?.attributes?.name,
-			district: property.attributes?.district?.data?.attributes?.name,
+			category: property.attributes?.propertyCategory,
+			city: property.attributes?.city,
+			district: property.attributes?.district,
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {

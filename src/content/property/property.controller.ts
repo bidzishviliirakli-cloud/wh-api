@@ -26,6 +26,11 @@ export class PropertyController {
 		return this.propertyService.getDealTypes(locale);
 	}
 
+	@Get("amenities")
+	getAmenities(@Query("locale") locale: string) {
+		return this.propertyService.getAmenities(locale);
+	}
+
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IProperty> {
 		return this.propertyService.getOne(id);
