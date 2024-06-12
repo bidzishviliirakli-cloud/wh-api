@@ -32,7 +32,7 @@ export class IUploadPropertyDTO {
 	streetAddress: string;
 
 	@ApiProperty({
-		description: "List of Amenities that property has, it should be array of amenity ids or names",
+		description: "List of Amenities that property has, it should be array of amenity IDs",
 		type: Array
 	})
 	@IsDefined({ each: true })
@@ -54,12 +54,12 @@ export class IUploadPropertyDTO {
 	@IsString({ each: true })
 	gallery: string[];
 
-	@ApiProperty({ description: "Property Developer Company", type: String })
+	@ApiProperty({ description: "ID of the Developer company", type: String })
 	@IsDefined()
 	@IsString()
 	developer: string;
 
-	@ApiProperty({ description: "Property Agent", type: String })
+	@ApiProperty({ description: "Property Agent ID", type: String })
 	@IsDefined()
 	@IsString()
 	agent: string;
