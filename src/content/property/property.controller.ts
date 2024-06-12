@@ -5,6 +5,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { PropertyService } from "./property.service";
 import { ICity } from "src/contracts/interface/ICity";
 import { IUploadPropertyDTO } from "@dto";
+import { IDistrict } from "src/contracts/interface/IDistrict";
 
 @ApiTags(ECMSContent.PROPERTY)
 @Controller(`content/${ECMSContent.PROPERTY}`)
@@ -14,6 +15,11 @@ export class PropertyController {
 	@Get("locations")
 	getLocations(@Query("locale") locale: string): Promise<Array<ICity>> {
 		return this.propertyService.getLocations(locale);
+	}
+
+	@Get("districts")
+	getDistricts(@Query("locale") locale: string): Promise<Array<IDistrict>> {
+		return this.propertyService.getDistricts(locale);
 	}
 
 	@Get("categories")

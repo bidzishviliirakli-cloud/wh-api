@@ -5,6 +5,8 @@ import { Util } from "@util";
 import { IPropertyQueryFilter } from "src/contracts/interface/IPropertyQueryFilter";
 import { ICity } from "src/contracts/interface/ICity";
 import { IUploadPropertyDTO } from "@dto";
+import { IDistrict } from "src/contracts/interface/IDistrict";
+import { IPropertyAmenity } from "src/contracts/interface/IPropertyAmenity";
 
 @Injectable()
 export class PropertyService {
@@ -77,6 +79,13 @@ export class PropertyService {
 		return data.map((el) => this.formatCity(el));
 	}
 
+	async getDistricts(locale: string) {
+		const data: ICity[] = await this.strapiService.getContent({ content: ECMSContent.DISTRICT, locale });
+
+		return data.map((el) => this.formatDistrict(el));
+	}
+	
+
 	async getPropertyCategories(locale: string) {
 		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CATEGORY, locale });
 
@@ -91,7 +100,7 @@ export class PropertyService {
 	
 	async getAmenities(locale: string) {
 		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_AMENITY, locale });
-		return "ok"
+		return data.map((el) => this.formatAmenity(el));
 	}
 
 
@@ -154,6 +163,28 @@ export class PropertyService {
 			createdAt: city?.attributes?.createdAt,
 			publishedAt: city?.attributes?.publishedAt,
 			updatedAt: city?.attributes?.updatedAt
+		};
+	}
+
+	private formatDistrict(district: IDistrict): any {
+		return {
+			id: district?.id,
+			title: district?.attributes?.name,
+			createdAt: district?.attributes?.createdAt,
+			publishedAt: district?.attributes?.publishedAt,
+			updatedAt: district?.attributes?.updatedAt
+		};
+	}
+
+	private formatAmenity(amenity: IPropertyAmenity): any {
+		return {
+			id: amenity?.id,
+			title: amenity?.attributes?.title,
+			//@ts-ignore
+			icon: amenity?.attributes.icon.data.attributes.url,
+			createdAt: amenity?.attributes?.createdAt,
+			publishedAt: amenity?.attributes?.publishedAt,
+			updatedAt: amenity?.attributes?.updatedAt
 		};
 	}
 
