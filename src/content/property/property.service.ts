@@ -131,7 +131,7 @@ export class PropertyService {
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
 			//@ts-ignore
-			gallery: property.attributes?.gallery.length !==0 ? JSON.parse(property.attributes?.gallery) : [],
+			gallery:JSON.parse(property.attributes?.gallery),
 			agent: this.formatAgentForProperty(agent),
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
