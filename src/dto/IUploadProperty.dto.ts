@@ -14,6 +14,7 @@ export class IUploadPropertyDTO {
 
 	@ApiProperty({ description: "Property size in m2", type: Number })
 	@IsDefined()
+	@IsNumber()
 	size: number;
 
 	@ApiProperty({ description: "Quantity of the bedrooms", type: Number })
@@ -49,10 +50,10 @@ export class IUploadPropertyDTO {
 	@IsString()
 	dealType: string;
 
-	@ApiProperty({ description: "Property Gallery, array of URLs", type: Array })
+	@ApiProperty({ description: "Property Gallery, String array of URLs", type: String })
 	@IsDefined()
-	@IsString({ each: true })
-	gallery: string[];
+	@IsString()
+	gallery: string;
 
 	@ApiProperty({ description: "ID of the Developer company", type: String })
 	@IsDefined()
