@@ -136,7 +136,10 @@ export class PropertyService {
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
 				const title = el?.attributes?.title;
-				const svg = el?.attributes?.icon.attributes.url;
+				const svg = el?.attributes?.title;
+
+				//@TODO get icon url
+				// const svg = el?.attributes?.icon.attributes.url;
 
 				return { title, svg };
 			}),
