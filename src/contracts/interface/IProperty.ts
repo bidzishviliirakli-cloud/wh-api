@@ -36,7 +36,7 @@ export interface IProperty {
 			data: IDealType;
 		};
 
-		gallery: string,
+		gallery: string;
 		city: {
 			data: ICity;
 		};

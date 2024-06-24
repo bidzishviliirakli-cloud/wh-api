@@ -16,5 +16,4 @@ export enum ECMSContent {
 	PROJECT = "projects",
 	UPLOAD = "upload",
 	DISTRICT = "districts"
-	
 }

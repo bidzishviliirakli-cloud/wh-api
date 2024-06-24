@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+
 import { StrapiService } from "@strapi";
 import { ECMSContent, IAgent, IProperty } from "@contracts";
 import { Util } from "@util";
@@ -8,11 +9,18 @@ import { IUploadPropertyDTO } from "@dto";
 import { IDistrict } from "src/contracts/interface/IDistrict";
 import { IPropertyAmenity } from "src/contracts/interface/IPropertyAmenity";
 
+import { Translate } from "src/translator";
+
+
 @Injectable()
 export class PropertyService {
 	content = ECMSContent.PROPERTY;
+	translationEngine;
 
-	constructor(private strapiService: StrapiService) {}
+	constructor(private strapiService: StrapiService) {
+		this.translationEngine = new Translate();
+
+	}
 
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
@@ -105,11 +113,16 @@ export class PropertyService {
 
 
 	async upload(body: IUploadPropertyDTO) {
-		const property = await this.strapiService.createContent({ data: body, content: ECMSContent.PROPERTY})
+		const translated = await this.translateProperty(body);
+
+		await this.strapiService.createContent({ data: body, content: ECMSContent.PROPERTY})
+		await this.strapiService.createContent({ data: translated, content: ECMSContent.PROPERTY })
+
+
 		return "ok";
 	}
 
-	public async formatProperty(property: IProperty, priceInUsd?: number, geoLocation?: any): Promise<any> {
+	async formatProperty(property: IProperty, priceInUsd?: number, geoLocation?: any): Promise<any> {
 		const agent = await this.strapiService.getContent({
 			id: property.attributes?.agent?.data?.id.toString(),
 			content: ECMSContent.AGENT
@@ -156,6 +169,61 @@ export class PropertyService {
 			publishedAt: property.attributes?.publishedAt,
 			updatedAt: property.attributes?.updatedAt
 		};
+	}
+
+
+	private async translateProperty(body: IUploadPropertyDTO): Promise<IUploadPropertyDTO>{
+		const english = "en";
+		const translated: IUploadPropertyDTO = {
+			title: "",
+			description: "",
+			aboutProperty: "",
+			size: 0,
+			bedroomQuantity: 0,
+			price: 0,
+			streetAddress: "",
+			propertyAmenities: [],
+			propertyCategory: "",
+			dealType: "",
+			gallery: "",
+			developer: "",
+			agent: "",
+			pinned: false,
+			city: "",
+			district: "",
+			bathroom: 0,
+			parking: 0,
+			locale: english
+
+		};
+
+		translated.title = await this.translationEngine.do(body.title, english);
+		translated.description = await this.translationEngine.do(body.description, english);
+		translated.aboutProperty = await this.translationEngine.do(body.aboutProperty, english);
+		translated.dealType = await this.translationEngine.do(body.dealType, english);
+		translated.propertyCategory = await this.translationEngine.do(body.propertyCategory, english);
+		translated.city = await this.translationEngine.do(body.city, english);
+		
+		translated.size = body.size;
+		translated.bedroomQuantity = body.bedroomQuantity;
+		translated.price = body.price;
+		translated.bathroom = body.bathroom;
+		translated.parking = body.parking;
+		
+		translated.streetAddress = body.streetAddress;
+		translated.district = body.district;
+		translated.gallery = body.gallery;
+		translated.pinned = body.pinned;
+		translated.locale = english;
+
+		//Get relation IDS for those
+		translated.propertyAmenities = body.propertyAmenities;
+		translated.developer = body.developer;
+		translated.agent = body.agent;
+	
+
+		return translated;
+
 	}
 
 	private formatCity(city: ICity): any {
