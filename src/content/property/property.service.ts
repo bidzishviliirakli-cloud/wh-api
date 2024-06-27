@@ -252,7 +252,7 @@ export class PropertyService {
 			id: amenity?.id,
 			title: amenity?.attributes?.title,
 			//@ts-ignore
-			icon: amenity?.attributes.icon.data.attributes.url,
+			icon: amenity?.attributes?.icon?.data?.attributes?.url,
 			createdAt: amenity?.attributes?.createdAt,
 			publishedAt: amenity?.attributes?.publishedAt,
 			updatedAt: amenity?.attributes?.updatedAt
