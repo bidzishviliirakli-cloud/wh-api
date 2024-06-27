@@ -106,8 +106,8 @@ export class AgentService {
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {
-				usd: Util.convertGelToUsd(property.attributes.price)?.toLocaleString("en-US"),
-				gel: property.attributes?.price?.toLocaleString("ge-GE")
+				gel: Util.convertUsdToGel(property.attributes.price)?.toLocaleString("ge-GE"),
+				usd: property.attributes?.price?.toLocaleString("en-US")
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
