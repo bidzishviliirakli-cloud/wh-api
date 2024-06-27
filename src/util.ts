@@ -2,8 +2,8 @@
 // import {load} from "cheerio"
 
 export class Util {
-	public static convertGelToUsd(amount: number): number {
-		return parseInt((amount / this.getConversionRate()).toFixed());
+	public static convertUsdToGel(amount: number): number {
+		return parseInt((amount * this.getConversionRate()).toFixed());
 	}
 
 	public static isNull(value: string): boolean {

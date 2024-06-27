@@ -24,10 +24,10 @@ export class PropertyService {
 
 	async getOne(id: string): Promise<IProperty> {
 		const property = await this.strapiService.getContent({ id, content: this.content });
-		const priceInUsd = Util.convertGelToUsd(property.attributes.price);
+		const priceInGel = Util.convertUsdToGel(property.attributes.price);
 		const geoLocation = await this.strapiService.getGeoLocation(property.attributes.streetAddress);
 
-		return this.formatProperty(property, priceInUsd, geoLocation);
+		return this.formatProperty(property, priceInGel, geoLocation);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
@@ -73,8 +73,8 @@ export class PropertyService {
 
 		return Promise.all(
 			data.map(async (el) => {
-				const priceInUsd = Util.convertGelToUsd(el.attributes.price);
-				const formatedProperty = await this.formatProperty(el, priceInUsd);
+				const priceInGel = Util.convertUsdToGel(el.attributes.price);
+				const formatedProperty = await this.formatProperty(el, priceInGel);
 
 				return formatedProperty;
 			})
@@ -122,7 +122,7 @@ export class PropertyService {
 		return "ok";
 	}
 
-	async formatProperty(property: IProperty, priceInUsd?: number, geoLocation?: any): Promise<any> {
+	async formatProperty(property: IProperty, priceInGel?: number, geoLocation?: any): Promise<any> {
 		const agent = await this.strapiService.getContent({
 			id: property.attributes?.agent?.data?.id.toString(),
 			content: ECMSContent.AGENT
@@ -162,8 +162,8 @@ export class PropertyService {
 			size: property.attributes?.size,
 			title: property.attributes?.title,
 			price: {
-				usd: priceInUsd?.toLocaleString("en-US"),
-				gel: property.attributes?.price?.toLocaleString("ge-GE")
+				gel: priceInGel?.toLocaleString("en-US"),
+				usd: property.attributes?.price?.toLocaleString("ge-GE")
 			},
 			createdAt: property.attributes?.createdAt,
 			publishedAt: property.attributes?.publishedAt,
