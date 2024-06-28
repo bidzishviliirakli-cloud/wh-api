@@ -111,6 +111,29 @@ export class PropertyService {
 		return data.map((el) => this.formatAmenity(el));
 	}
 
+	async getHeatingTypes(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.HEATING_TYPE, locale });
+		return data.map( el => this.commonFormatter(el));
+
+	}
+
+	async getParkingTypes(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.PARKING_TYPE, locale });
+		return data.map( el => this.commonFormatter(el));
+
+	}
+
+	async getCondintionTypes(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_CONDINTION_TYPE, locale });
+		return data.map( el => this.commonFormatter(el));
+
+	}
+
+	async getStatusTypes(locale: string) {
+		const data = await this.strapiService.getContent({ content: ECMSContent.PROPERTY_STATUS_TYPE, locale });
+		return data.map( el => this.commonFormatter(el));
+	}
+
 
 	async upload(body: IUploadPropertyDTO) {
 		const translated = await this.translateProperty(body);
@@ -139,6 +162,14 @@ export class PropertyService {
 			aboutProperty: property.attributes?.aboutProperty,
 			parking: property.attributes?.parking,
 			bathroom: property.attributes?.bathroom,
+			roomQuantity: property.attributes?.roomQuantity,
+			floor: property.attributes?.floor,
+			totalFloor: property.attributes?.totalFloor,
+			status: property.attributes?.status,
+			condition: property.attributes?.condition,
+			ceilingHeight: property.attributes?.ceilingHeight,
+			heating: property.attributes?.heating,
+			parkingType: property.attributes?.parkingType,
 			developer: {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
@@ -224,6 +255,13 @@ export class PropertyService {
 
 		return translated;
 
+	}
+
+	private commonFormatter(commonObj: any): any {
+		return {
+			id: commonObj?.id,
+			title: commonObj?.attributes?.title
+		};
 	}
 
 	private formatCity(city: ICity): any {

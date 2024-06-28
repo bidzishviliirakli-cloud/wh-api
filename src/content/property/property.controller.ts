@@ -37,6 +37,26 @@ export class PropertyController {
 		return this.propertyService.getAmenities(locale);
 	}
 
+	@Get("heatingTypes")
+	getHeatingTypes(@Query("locale") locale: string) {
+		return this.propertyService.getHeatingTypes(locale);
+	}
+
+	@Get("parkingTypes")
+	getParkingTypes(@Query("locale") locale: string) {
+		return this.propertyService.getParkingTypes(locale);
+	}
+
+	@Get("condintionTypes")
+	getCondintionTypes(@Query("locale") locale: string) {
+		return this.propertyService.getCondintionTypes(locale);
+	}
+
+	@Get("statusTypes")
+	getStatusTypes(@Query("locale") locale: string) {
+		return this.propertyService.getStatusTypes(locale);
+	}
+
 	@Get(":id")
 	getById(@Param("id") id: string): Promise<IProperty> {
 		return this.propertyService.getOne(id);

@@ -15,5 +15,10 @@ export enum ECMSContent {
 	COMPANY_OFFICE = "company-offices",
 	PROJECT = "projects",
 	UPLOAD = "upload",
-	DISTRICT = "districts"
+	DISTRICT = "districts",
+	HEATING_TYPE = "heating-types",
+	PARKING_TYPE = "parking-types",
+	PROPERTY_CONDINTION_TYPE = "property-condintion-types",
+	PROPERTY_STATUS_TYPE = "property-status-types",
+
 }

@@ -23,6 +23,14 @@ export interface IProperty {
 		createdAt: Date;
 		updatedAt: Date;
 		publishedAt: Date;
+		roomQuantity: number,
+        floor: number,
+        totalFloor: number,
+        status: string,
+        condition: string,
+        ceilingHeight: number,
+        heating: string,
+        parkingType: string
 		agent: {
 			data: IAgent;
 		};

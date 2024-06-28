@@ -87,6 +87,14 @@ export class AgentService {
 			aboutProperty: property.attributes?.aboutProperty,
 			parking: property.attributes?.parking,
 			bathroom: property.attributes?.bathroom,
+			roomQuantity: property.attributes?.roomQuantity,
+			floor: property.attributes?.floor,
+			totalFloor: property.attributes?.totalFloor,
+			status: property.attributes?.status,
+			condition: property.attributes?.condition,
+			ceilingHeight: property.attributes?.ceilingHeight,
+			heating: property.attributes?.heating,
+			parkingType: property.attributes?.parkingType,
 			developer: {
 				title: property.attributes?.developer?.data?.attributes?.title,
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
