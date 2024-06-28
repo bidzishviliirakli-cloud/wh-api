@@ -224,6 +224,14 @@ export class PropertyService {
 			district: "",
 			bathroom: 0,
 			parking: 0,
+			roomQuantity: 0,
+			floor: 0,
+			totalFloor: 0,
+			ceilingHeight: 0,
+			status: "",
+			condition: "",
+			heating: "",
+			parkingType: "",
 			locale: english
 
 		};
@@ -234,12 +242,20 @@ export class PropertyService {
 		translated.dealType = await this.translationEngine.do(body.dealType, english);
 		translated.propertyCategory = await this.translationEngine.do(body.propertyCategory, english);
 		translated.city = await this.translationEngine.do(body.city, english);
-		
+		translated.status = await this.translationEngine.do(body.status, english);
+		translated.condition = await this.translationEngine.do(body.condition, english);
+		translated.heating = await this.translationEngine.do(body.heating, english);
+		translated.parkingType = await this.translationEngine.do(body.parkingType, english);
+
 		translated.size = body.size;
 		translated.bedroomQuantity = body.bedroomQuantity;
 		translated.price = body.price;
 		translated.bathroom = body.bathroom;
 		translated.parking = body.parking;
+		translated.roomQuantity = body.roomQuantity;
+		translated.floor = body.floor;
+		translated.totalFloor = body.totalFloor;
+		translated.ceilingHeight = body.ceilingHeight;
 		
 		translated.streetAddress = body.streetAddress;
 		translated.district = body.district;

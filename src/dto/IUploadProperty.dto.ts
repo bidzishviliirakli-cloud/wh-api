@@ -113,6 +113,54 @@ export class IUploadPropertyDTO {
 	@IsNotEmpty()
 	parking: number;
 
+	@ApiProperty({ description: "Rooms quantity", type: Number })
+	@IsDefined()
+	@IsNumber()
+	@IsNotEmpty()
+	roomQuantity: number;
+
+	@ApiProperty({ description: "Floor", type: Number })
+	@IsDefined()
+	@IsNumber()
+	@IsNotEmpty()
+	floor: number;
+
+	@ApiProperty({ description: "Total Floors in building", type: Number })
+	@IsDefined()
+	@IsNumber()
+	@IsNotEmpty()
+	totalFloor: number;
+
+	@ApiProperty({ description: "Ceiling height", type: Number })
+	@IsDefined()
+	@IsNumber()
+	@IsNotEmpty()
+	ceilingHeight: number;
+
+	@ApiProperty({ description: "Status of the object", type: String })
+	@IsDefined()
+	@IsString()
+	@IsNotEmpty()
+	status: string;
+
+	@ApiProperty({ description: "Condintion", type: String })
+	@IsDefined()
+	@IsString()
+	@IsNotEmpty()
+	condition: string;
+
+	@ApiProperty({ description: "Heating type", type: String })
+	@IsDefined()
+	@IsString()
+	@IsNotEmpty()
+	heating: string;
+
+	@ApiProperty({ description: "Parking Type", type: String })
+	@IsDefined()
+	@IsString()
+	@IsNotEmpty()
+	parkingType: string;
+
 	@ApiProperty({ description: "Language", type: String })
 	@IsDefined()
 	@IsString()
