@@ -31,9 +31,9 @@ export class CompanyService {
 			phoneNumber: office?.attributes?.phoneNumber,
 			gallery: office?.attributes?.gallery?.data?.map((ph) => {
 				return {
-					small: ph.attributes.formats.small.url,
-					medium: ph.attributes.formats.medium.url,
-					thumbnail: ph.attributes.formats.thumbnail.url
+					small: ph.attributes?.formats?.small?.url,
+					medium: ph.attributes?.formats?.medium?.url,
+					thumbnail: ph.attributes?.formats?.thumbnail?.url
 				};
 			}),
 			createdAt: office?.attributes?.createdAt,
