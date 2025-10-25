@@ -26,8 +26,9 @@ export class PropertyService {
 		const property = await this.strapiService.getContent({ id, content: this.content });
 		const priceInGel = Util.convertUsdToGel(property.attributes.price);
 		const geoLocation = await this.strapiService.getGeoLocation(property.attributes.streetAddress);
+		const getAgent = true;
 
-		return this.formatProperty(property, priceInGel, geoLocation);
+		return this.formatProperty(property, priceInGel, geoLocation, getAgent);
 	}
 
 	async getMany(filter: IPropertyQueryFilter): Promise<Array<IProperty>> {
@@ -145,8 +146,8 @@ export class PropertyService {
 		return "ok";
 	}
 
-	async formatProperty(property: IProperty, priceInGel?: number, geoLocation?: any): Promise<any> {
-		const agent = await this.strapiService.getContent({
+	async formatProperty(property: IProperty, priceInGel?: number, geoLocation?: any, getAgent = false): Promise<any> {
+		const agent = getAgent && await this.strapiService.getContent({
 			id: property.attributes?.agent?.data?.id.toString(),
 			content: ECMSContent.AGENT
 		});
@@ -175,8 +176,8 @@ export class PropertyService {
 				ceo: property.attributes?.developer?.data?.attributes?.ceo
 			},
 			//@ts-ignore
-			gallery:JSON.parse(property.attributes?.gallery),
-			agent: this.formatAgentForProperty(agent),
+			gallery: JSON.parse(property.attributes?.gallery),
+			agent: agent ?  this.formatAgentForProperty(agent) : null,
 			pinned: property.attributes?.pinned,
 			amenities: property.attributes?.propertyAmenities?.data?.map((el) => {
 				const title = el?.attributes?.title;
