@@ -67,6 +67,6 @@ export class StrapiService {
 			return `${baseUrl}/${id}?populate=*`;
 		}
 
-		return `${baseUrl}?populate=*&locale=${locale}&${filter}`;
+		return `${baseUrl}?populate=*&locale=${locale}&${filter}&sort[0]=createdAt:desc`;
 	}
 }
